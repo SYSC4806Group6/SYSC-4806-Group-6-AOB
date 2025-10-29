@@ -34,6 +34,7 @@ public class PurchaseReceipt {
      */
     public PurchaseReceipt(User user) {
         this.user = user;
+        this.user.addPurchaseReceipt(this);
         this.items = new ArrayList<PurchaseReceiptItem>();
         this.totalCost = -1;
         this.orderDateTime = LocalDateTime.now();

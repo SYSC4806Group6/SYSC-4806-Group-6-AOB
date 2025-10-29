@@ -34,6 +34,7 @@ public class ShoppingCartItem {
     public ShoppingCartItem(ShoppingCart shoppingCart, Book book) {
         this.shoppingCart = shoppingCart;
         this.book = book;
+        this.book.addShoppingCartItem(this);
         this.quantity = 1;
     }
 
@@ -46,6 +47,7 @@ public class ShoppingCartItem {
     public ShoppingCartItem(ShoppingCart shoppingCart, Book book, int quantity) {
         this.shoppingCart = shoppingCart;
         this.book = book;
+        this.book.addShoppingCartItem(this);
         this.quantity = quantity;
     }
 

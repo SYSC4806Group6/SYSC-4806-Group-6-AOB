@@ -29,6 +29,7 @@ public class ShoppingCart {
      */
     public ShoppingCart(User user) {
         this.user = user;
+        this.user.setShoppingCart(this);
         this.items = new ArrayList<ShoppingCartItem>();
     }
 

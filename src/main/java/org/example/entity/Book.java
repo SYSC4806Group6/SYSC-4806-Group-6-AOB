@@ -62,6 +62,13 @@ public class Book {
         this.purchaseReceiptItems = new ArrayList<>();
     }
 
+    public boolean addShoppingCartItem(ShoppingCartItem shoppingCartItem) {
+        return this.shoppingCartItems.add(shoppingCartItem);
+    }
+    public boolean addPurchaseReceiptItem(PurchaseReceiptItem purchaseReceiptItem) {
+        return this.purchaseReceiptItems.add(purchaseReceiptItem);
+    }
+
     /* Getters and Setters */
     public void setIsbn(String isbn) {
         this.isbn = isbn;
