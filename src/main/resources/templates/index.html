@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>AmazinBookStore</title>
+    <meta charset="UTF-8">
+    <title>Amazin Book Store</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background-color: #f7f7f7; }
+        table { border-collapse: collapse; width: 100%; background: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; }
+        th { background-color: #eee; }
+        .actions a { margin-right: 5px; }
+        .admin-button { margin: 15px 0; display: inline-block; }
+    </style>
 </head>
 <body>
-<h1 th:text="${message}">Placeholder message</h1>
-<p>HOMEPAGE</p>
+<h1>📚 Amazin Book Store</h1>
+
+<div class="admin-button">
+    <a href="/admin/addBook">➕ Add Book</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Price</th>
+        <th>Inventory</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.price}"></td>
+        <td th:text="${book.inventoryQty}"></td>
+        <td class="actions">
+            <a th:href="@{/admin/editBook(id=${book.id})}">✏️ Edit</a>
+            <a th:href="@{/admin/deleteBook(id=${book.id})}">🗑️ Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
-
