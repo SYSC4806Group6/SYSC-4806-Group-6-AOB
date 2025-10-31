@@ -13,7 +13,7 @@ public class ShoppingCart {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "shoppingcart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<ShoppingCartItem> items;
 
     /**
@@ -41,7 +41,8 @@ public class ShoppingCart {
      */
     public boolean addShoppingCartItem(ShoppingCartItem item) {
         if (items.contains(item)) {
-            items.get(items.indexOf(item)).setQuantity(item.getQuantity() + 1);
+            ShoppingCartItem currItem = items.get(items.indexOf(item));
+            currItem.setQuantity(currItem.getQuantity() + 1);
             return true;
         }
         return this.items.add(item);

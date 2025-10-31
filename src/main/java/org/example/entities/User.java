@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     private String email;
     private String username;
     private String password;
@@ -17,7 +18,7 @@ public class User {
     private USER_ROLE userRole;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ShoppingCart shoppingCart;
-    @OneToMany(mappedBy = "purchasereceipt",  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL)
     private List<PurchaseReceipt> purchaseReceipts;
 
     /**
@@ -55,6 +56,7 @@ public class User {
      * @return True if added, False Otherwise
      */
     public boolean addPurchaseReceipt(PurchaseReceipt purchaseReceipt) {
+        purchaseReceipt.setUser(this);
         return this.purchaseReceipts.add(purchaseReceipt);
     }
     /**
@@ -63,11 +65,12 @@ public class User {
      * @return True if removed, False otherwise
      */
     public boolean removePurchaseReceipt(PurchaseReceipt purchaseReceipt) {
+        purchaseReceipt.setUser(null);
         return this.purchaseReceipts.remove(purchaseReceipt);
     }
 
     /* Getters and setters */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     public void setId(int id) {

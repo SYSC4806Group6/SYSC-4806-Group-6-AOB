@@ -11,6 +11,7 @@ public class Book {
     private String isbn;
     private String title;
     private String description;
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> genres;
     private String pictureUrl;
     private String author;
@@ -63,9 +64,11 @@ public class Book {
     }
 
     public boolean addShoppingCartItem(ShoppingCartItem shoppingCartItem) {
+        shoppingCartItem.setBook(this);
         return this.shoppingCartItems.add(shoppingCartItem);
     }
     public boolean addPurchaseReceiptItem(PurchaseReceiptItem purchaseReceiptItem) {
+        purchaseReceiptItem.setBook(this);
         return this.purchaseReceiptItems.add(purchaseReceiptItem);
     }
 

@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 public class ShoppingCartItem {
     @Id
     @GeneratedValue
-    private int id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shoppingcart_id")
+    private long id;
+    @ManyToOne
+    @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
     @ManyToOne
     @JoinColumn(name = "book_isbn")
@@ -35,6 +35,7 @@ public class ShoppingCartItem {
         this.shoppingCart = shoppingCart;
         this.book = book;
         this.book.addShoppingCartItem(this);
+        this.shoppingCart.addShoppingCartItem(this);
         this.quantity = 1;
     }
 
@@ -48,6 +49,7 @@ public class ShoppingCartItem {
         this.shoppingCart = shoppingCart;
         this.book = book;
         this.book.addShoppingCartItem(this);
+        this.shoppingCart.addShoppingCartItem(this);
         this.quantity = quantity;
     }
 
@@ -60,7 +62,7 @@ public class ShoppingCartItem {
     }
 
     /* Getters and Setters */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     public void setId(int id) {

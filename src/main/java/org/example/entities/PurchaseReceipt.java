@@ -10,11 +10,11 @@ import java.util.List;
 public class PurchaseReceipt {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "purchasereceipt", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "purchaseReceipt", cascade = CascadeType.ALL)
     private List<PurchaseReceiptItem> items;
     private double totalCost;
     private LocalDateTime orderDateTime;
@@ -46,6 +46,7 @@ public class PurchaseReceipt {
      * @return True if added, False otherwise
      */
     public boolean addPurchaseReceiptItem(PurchaseReceiptItem item) {
+        item.setPurchaseReceipt(this);
         return this.items.add(item);
     }
 
@@ -55,6 +56,7 @@ public class PurchaseReceipt {
      * @return True if removed, False otherwise
      */
     public boolean removePurchaseReceiptItem(PurchaseReceiptItem item) {
+        item.setPurchaseReceipt(null);
         return this.items.remove(item);
     }
 
@@ -66,7 +68,7 @@ public class PurchaseReceipt {
     }
 
     /* Getters and Setters */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     public void setId(int id) {

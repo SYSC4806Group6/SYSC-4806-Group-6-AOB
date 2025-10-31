@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 public class PurchaseReceiptItem {
     @Id
     @GeneratedValue
-    private int id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchasereceipt_id")
+    private long id;
+    @ManyToOne
+    @JoinColumn(name = "purchase_receipt_id")
     private PurchaseReceipt purchaseReceipt;
     @ManyToOne
     @JoinColumn(name = "book_isbn")
@@ -58,7 +58,7 @@ public class PurchaseReceiptItem {
     }
 
     /* Getters and Setters */
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     public void setId(int id) {
