@@ -74,7 +74,7 @@ class BookCatalogServiceTest {
         Page<Book> result = catalogService.searchBooks(criteria);
 
         assertThat(result.getTotalElements()).isEqualTo(1);
-        assertThat(result.getContent().getFirst().getTitle()).isEqualTo("The Fellowship of the Ring");
+        assertThat(result.getContent().get(0).getTitle()).isEqualTo("The Fellowship of the Ring");
     }
 
     @Test
@@ -86,7 +86,7 @@ class BookCatalogServiceTest {
         Page<Book> result = catalogService.searchBooks(criteria);
 
         assertThat(result.getTotalElements()).isEqualTo(1);
-        assertThat(result.getContent().getFirst().getIsbn()).isEqualTo("9780441172719");
+        assertThat(result.getContent().get(0).getIsbn()).isEqualTo("9780441172719");
     }
 
     @Test
