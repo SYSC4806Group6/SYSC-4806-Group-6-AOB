@@ -50,7 +50,7 @@ public class Book {
     private List<String> tags = new ArrayList<>();
 
 
-    protected Book() {
+    public Book() {
         // JPA requires a no-args constructor
     }
 
