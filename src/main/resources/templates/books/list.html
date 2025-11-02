@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AmazinBookStore | Catalog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 1rem 2rem;
+            background-color: #f5f5f5;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .search-form, .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .search-form input[type="text"] {
+            min-width: 260px;
+            padding: 0.5rem;
+        }
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .book-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .book-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #ececec;
+        }
+        .alert {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            background: #ffe6e6;
+            color: #7a1d1d;
+        }
+        .pagination {
+            margin: 2rem 0;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .pagination a, .pagination span {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .pagination .active {
+            background: #333;
+            color: #fff;
+            border-color: #333;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            header {
+                gap: 1rem;
+            }
+            .search-form, .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Amazin Book Catalog</h1>
+    <form class="search-form" th:action="@{/books}" method="get">
+        <input type="text"
+               name="searchTerm"
+               placeholder="Search by title, author, or publisher"
+               th:value="${criteria.searchTerm}">
+        <button type="submit">Search</button>
+    </form>
+</header>
+
+<section class="filters">
+    <form th:action="@{/books}" method="get">
+        <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
+        <label>
+            Publisher
+            <select name="publisher">
+                <option value="" th:selected="${!criteria.hasPublisher()}">All publishers</option>
+                <option th:each="publisher : ${publishers}"
+                        th:value="${publisher}"
+                        th:text="${publisher}"
+                        th:selected="${criteria.publisher != null ? #strings.equalsIgnoreCase(publisher, criteria.publisher) : false}">
+                </option>
+            </select>
+        </label>
+        <label>
+            Tag
+            <select name="tag">
+                <option value="" th:selected="${!criteria.hasTag()}">All tags</option>
+                <option th:each="tagItem : ${tags}"
+                        th:value="${tagItem}"
+                        th:text="${tagItem}"
+                        th:selected="${criteria.tag != null ? #strings.equalsIgnoreCase(tagItem, criteria.tag) : false}">
+                </option>
+            </select>
+        </label>
+        <label>
+            Sort by
+            <select name="sortBy">
+                <option th:each="sortOption : ${sortOptions}"
+                        th:value="${sortOption}"
+                        th:text="${#strings.capitalize(sortOption)}"
+                        th:selected="${criteria.sortBy != null ? sortOption.equalsIgnoreCase(criteria.sortBy) : sortOption == 'title'}">
+                </option>
+            </select>
+        </label>
+        <label>
+            Direction
+            <select name="sortDirection">
+                <option th:each="direction : ${directions}"
+                        th:value="${direction.name()}"
+                        th:text="${direction.name()}"
+                        th:selected="${criteria.sortDirection != null ? direction == criteria.sortDirection : direction.name() == 'ASC'}">
+                </option>
+            </select>
+        </label>
+        <button type="submit">Apply Filters</button>
+        <input type="hidden" name="size" th:value="${page.size}">
+    </form>
+</section>
+
+<div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
+
+<section th:if="${#lists.isEmpty(books)}">
+    <p>No books found. Try adjusting your search or filters.</p>
+</section>
+
+<section class="book-grid" th:if="${!#lists.isEmpty(books)}">
+    <article class="book-card" th:each="book : ${books}">
+        <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">
+            <img th:if="${book.imageUrl != null}" th:src="${book.imageUrl}" th:alt="${book.title}">
+            <div th:if="${book.imageUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
+                <span>No image</span>
+            </div>
+        </a>
+        <h2 th:text="${book.title}">Book Title</h2>
+        <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
+        <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
+        <p><strong>Price:</strong> <span th:text="${#numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">$0.00</span></p>
+        <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
+        <p th:if="${!#lists.isEmpty(book.tags)}">
+            <strong>Tags:</strong>
+            <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
+        </p>
+        <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">View Details</a>
+    </article>
+</section>
+
+<nav class="pagination" th:if="${page.totalPages > 1}">
+    <span th:if="${page.isFirst()}">First</span>
+    <a th:if="${!page.isFirst()}"
+       th:href="@{/books(page=0, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+        First
+    </a>
+    <span th:if="${!page.hasPrevious()}">Prev</span>
+    <a th:if="${page.hasPrevious()}"
+       th:href="@{/books(page=${page.number - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+        Prev
+    </a>
+    <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+          th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
+        <span th:if="${i == page.number}"
+              th:text="${i + 1}"
+              class="active"></span>
+        <a th:if="${i != page.number}"
+           th:text="${i + 1}"
+           th:href="@{/books(page=${i}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}"></a>
+    </span>
+    <span th:if="${!page.hasNext()}">Next</span>
+    <a th:if="${page.hasNext()}"
+       th:href="@{/books(page=${page.number + 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+        Next
+    </a>
+    <span th:if="${page.isLast()}">Last</span>
+    <a th:if="${!page.isLast()}"
+       th:href="@{/books(page=${page.totalPages - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+        Last
+    </a>
+</nav>
+
+</body>
+</html>
