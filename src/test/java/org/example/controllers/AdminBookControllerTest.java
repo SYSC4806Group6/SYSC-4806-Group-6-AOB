@@ -90,7 +90,7 @@ class AdminBookControllerTest {
                         .param("title", sampleBook.getTitle())
                         .param("author", sampleBook.getAuthor())
                         .param("publisher", sampleBook.getPublisher())
-                        .param("price", sampleBook.getPrice().toString())
+                        .param("price", String.valueOf(sampleBook.getPrice()))
                         .param("stock", String.valueOf(sampleBook.getStock()))
                         .param("description", sampleBook.getDescription())
                 )
