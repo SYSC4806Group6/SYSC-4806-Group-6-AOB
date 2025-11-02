@@ -5,11 +5,11 @@ import org.example.entities.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends PagingAndSortingRepository<Book, String> {
+public interface BookRepository extends JpaRepository<Book, String> {
 
     // Primary search covering title, author, and publisher with pagination support.
     Page<Book> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrPublisherContainingIgnoreCase(
