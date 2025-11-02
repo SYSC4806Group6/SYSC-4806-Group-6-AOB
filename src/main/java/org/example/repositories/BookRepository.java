@@ -24,7 +24,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
     Book findByAuthorAndIsbn(String author, String isbn);
     List<Book> findByTitleAndAuthor(String title, String author);
     Book findByTitleAndAuthorAndIsbn(String title, String author, String isbn);
-}
 
     // Primary search covering title, author, and publisher with pagination support.
     Page<Book> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrPublisherContainingIgnoreCase(
