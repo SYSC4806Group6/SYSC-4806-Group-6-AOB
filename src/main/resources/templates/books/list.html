@@ -88,6 +88,9 @@
 <body>
 <header>
     <h1>Amazin Book Catalog</h1>
+    <div class="header-cart">
+        Cart: <span id="cart-count" th:text="${cartSize}">0</span> items
+    </div>
     <form class="search-form" th:action="@{/books}" method="get">
         <input type="text"
                name="searchTerm"
@@ -171,6 +174,9 @@
             <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
         </p>
         <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">View Details</a>
+        <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
+            <button type="submit">Add to Cart</button>
+        </form>
     </article>
 </section>
 
@@ -206,5 +212,23 @@
     </a>
 </nav>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".add-to-cart-form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const isbn = this.getAttribute("data-isbn");
+
+                fetch(`/cart/add/${isbn}`, { method: "POST" })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); //
+                        document.getElementById("cart-count").innerText = data.itemCount;
+                    })
+                    .catch(error => console.error("Error adding to cart:", error));
+            });
+        });
+    });
+</script>
 </body>
 </html>
