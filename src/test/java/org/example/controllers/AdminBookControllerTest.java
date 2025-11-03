@@ -36,10 +36,10 @@ class AdminBookControllerTest {
                 "Sample Book",
                 "Sample description",
                 List.of("fiction"),
-                null,
+                null, // pictureUrl
                 "John Doe",
-                "Publisher",
-                12.99
+                "Sample Publisher",
+                19.99
         );
     }
 

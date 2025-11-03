@@ -41,11 +41,12 @@ class BookControllerTest {
             "Dune",
             "Epic science fiction.",
             List.of("sci-fi", "classic"),
-            null,
+            null, // pictureUrl
             "Frank Herbert",
             "Ace",
             14.99
     );
+
 
     @Test
     void listBooks_returnsCatalogViewWithModelAttributes() throws Exception {

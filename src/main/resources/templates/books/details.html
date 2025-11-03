@@ -102,8 +102,8 @@
 <a class="secondary" style="margin-bottom: 1rem; display: inline-block;" th:href="@{/books}">← Back to catalog</a>
 <section class="container">
     <div>
-        <img th:if="${book.imageUrl != null}" th:src="${book.imageUrl}" th:alt="${book.title}" class="book-image">
-        <div th:if="${book.imageUrl == null}" class="fallback-image">
+        <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}" class="book-image">
+        <div th:if="${book.pictureUrl == null}" class="fallback-image">
             No image available
         </div>
     </div>
@@ -120,8 +120,8 @@
             <span class="tag" th:each="tag : ${book.tags}" th:text="${tag}">Tag</span>
         </div>
 
-        <div class="stock" th:classappend="${book.stock > 0} ? ' available' : ' unavailable'"
-             th:text="${book.stock > 0 ? 'In stock (' + book.stock + ' left)' : 'Out of stock'}">
+        <div class="stock" th:classappend="${book.inventoryQuantity > 0} ? ' available' : ' unavailable'"
+             th:text="${book.inventoryQuantity > 0 ? 'In stock (' + book.inventoryQuantity + ' left)' : 'Out of stock'}">
         </div>
 
         <div class="actions">

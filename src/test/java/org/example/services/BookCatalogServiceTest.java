@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import org.example.entities.Book;
 import org.example.repositories.BookRepository;
@@ -29,24 +28,34 @@ class BookCatalogServiceTest {
         bookRepository.saveAll(
                 List.of(
                         new Book(
-                                "1234567890123",
-                                "Sample Book",
-                                "Sample description",
-                                List.of("fiction"),
-                                null,
-                                "John Doe",
-                                "Publisher",
-                                12.99
-                                ),
-                        new Book(
-                                "978-0743273565",
-                                "The Great Gatsby",
-                                "A novel about the Jazz Age.",
-                                new ArrayList<>(List.of("Fiction", "Classic")),
-                                "url2.jpg",
-                                "F. Scott Fitzgerald",
-                                "Scribner",
+                                "9780441172719",
+                                "Dune",
+                                "Epic science fiction.",
+                                List.of("sci-fi", "classic"),
+                                null, // pictureUrl
+                                "Frank Herbert",
+                                "Ace",
                                 14.99
+                        ),
+                        new Book(
+                                "9780261103573",
+                                "The Fellowship of the Ring",
+                                "First volume of The Lord of the Rings.",
+                                List.of("fantasy", "adventure"),
+                                null, // pictureUrl
+                                "J.R.R. Tolkien",
+                                "HarperCollins",
+                                12.50
+                        ),
+                        new Book(
+                                "9780316769488",
+                                "The Catcher in the Rye",
+                                "Classic novel.",
+                                List.of("classic", "literature"),
+                                null, // pictureUrl
+                                "J. D. Salinger",
+                                "Little, Brown and Company",
+                                10.00
                         )
                 )
         );

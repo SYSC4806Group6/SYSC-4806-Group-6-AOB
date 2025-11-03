@@ -27,7 +27,7 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.publisher}"></td>
         <td th:text="${book.price}"></td>
-        <td th:text="${book.stock}"></td>
+        <td th:text="${book.inventoryQuantity}"></td>
         <td>
             <a th:href="@{|/admin/books/edit/${book.isbn}|}">Edit</a> |
             <a th:href="@{|/admin/books/delete/${book.isbn}|}"
