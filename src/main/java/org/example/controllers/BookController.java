@@ -1,7 +1,10 @@
 package org.example.controllers;
 
 import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
 import org.example.entities.Book;
+import org.example.entities.ShoppingCart;
 import org.example.services.BookCatalogService;
 import org.example.services.BookNotFoundException;
 import org.example.services.BookSearchCriteria;
@@ -25,7 +28,7 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String listBooks(@ModelAttribute("criteria") BookSearchCriteria criteria, Model model) {
+    public String listBooks(@ModelAttribute("criteria") BookSearchCriteria criteria, Model model, HttpSession session) {
         Page<Book> page = bookCatalogService.searchBooks(criteria);
 
         // Surface search results along with filter metadata for the Thymeleaf view.
@@ -35,6 +38,10 @@ public class BookController {
         model.addAttribute("tags", bookCatalogService.listTags());
         model.addAttribute("sortOptions", List.of("title", "author", "price"));
         model.addAttribute("directions", Sort.Direction.values());
+
+        ShoppingCart cart  = (ShoppingCart) session.getAttribute("cart");
+        int cartSize = cart != null ? cart.getItems().size() : 0;
+        model.addAttribute("cartSize", cartSize);
 
         return "books/list";
     }

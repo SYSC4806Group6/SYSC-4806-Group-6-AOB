@@ -19,10 +19,6 @@ public class ShoppingCartItem {
      * Default constructor
      */
     public ShoppingCartItem() {
-        // Want to add to cart, not create new cart for each item
-        //this.shoppingCart = new ShoppingCart();
-        // Same goes for the book
-        //this.book = new Book();
         this.quantity = 1;
     }
 
@@ -34,8 +30,6 @@ public class ShoppingCartItem {
     public ShoppingCartItem(ShoppingCart shoppingCart, Book book) {
         this.shoppingCart = shoppingCart;
         this.book = book;
-        this.book.addShoppingCartItem(this);
-        this.shoppingCart.addShoppingCartItem(this);
         this.quantity = 1;
     }
 
@@ -48,8 +42,11 @@ public class ShoppingCartItem {
     public ShoppingCartItem(ShoppingCart shoppingCart, Book book, int quantity) {
         this.shoppingCart = shoppingCart;
         this.book = book;
-        this.book.addShoppingCartItem(this);
-        this.shoppingCart.addShoppingCartItem(this);
+        this.quantity = quantity;
+    }
+
+    public ShoppingCartItem(Book book, int quantity) {
+        this.book = book;
         this.quantity = quantity;
     }
 
@@ -94,13 +91,11 @@ public class ShoppingCartItem {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ShoppingCartItem sci = (ShoppingCartItem) o;
-        return (this.shoppingCart.equals(sci.shoppingCart) && this.book.equals(sci.book));
+        if (this == o) return true;
+        if (!(o instanceof ShoppingCartItem)) return false;
+        ShoppingCartItem that = (ShoppingCartItem) o;
+        return book.equals(that.book) &&
+                shoppingCart != null &&
+                shoppingCart.equals(that.shoppingCart);
     }
 }

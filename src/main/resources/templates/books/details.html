@@ -123,11 +123,6 @@
         <div class="stock" th:classappend="${book.stock > 0} ? ' available' : ' unavailable'"
              th:text="${book.stock > 0 ? 'In stock (' + book.stock + ' left)' : 'Out of stock'}">
         </div>
-
-        <div class="actions">
-            <button class="primary" type="button" disabled>Add to Cart (Coming soon)</button>
-            <a class="secondary" th:href="@{/books}">Continue browsing</a>
-        </div>
     </article>
 </section>
 </body>
