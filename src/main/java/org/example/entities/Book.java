@@ -167,4 +167,7 @@ public class Book {
     //for tests cases that conflicted with alternate version
     public String getImageUrl() { return this.pictureUrl; }
     public void setImageUrl(String imageUrl) { this.pictureUrl = imageUrl; }
+    public String getId(){ return this.isbn; }
+    public void setId(String id){ this.isbn = id; }
+
 }
