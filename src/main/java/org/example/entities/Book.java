@@ -21,9 +21,9 @@ public class Book {
     private String description;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "book_genres", joinColumns = @JoinColumn(name = "isbn"))
-    @Column(name = "genre")
-    private List<String> genres = new ArrayList<>();
+    @CollectionTable(name = "book_tags", joinColumns = @JoinColumn(name = "isbn"))
+    @Column(name = "tags")
+    private List<String> tags = new ArrayList<>();
 
     private String pictureUrl;
 
@@ -55,7 +55,7 @@ public class Book {
             String isbn,
             String title,
             String description,
-            List<String> genres,
+            List<String> tags,
             String pictureUrl,
             String author,
             String publisher,
@@ -70,8 +70,8 @@ public class Book {
         this.price = price;
         this.inventoryQuantity = 0;
 
-        if (genres != null) {
-            this.genres.addAll(genres);
+        if (tags != null) {
+            this.tags.addAll(tags);
         }
     }
 
@@ -103,27 +103,27 @@ public class Book {
     public void setInventoryQuantity(int inventoryQuantity) { this.inventoryQuantity = inventoryQuantity; }
 
 
-    // genre handling
+    // tag handling
 
-    public List<String> getGenres() {
-        return Collections.unmodifiableList(genres);
+    public List<String> getTags() {
+        return Collections.unmodifiableList(tags);
     }
 
-    public void setGenres(List<String> genres) {
-        this.genres.clear();
-        if (genres != null) {
-            this.genres.addAll(genres);
+    public void setTags(List<String> tags) {
+        this.tags.clear();
+        if (tags != null) {
+            this.tags.addAll(tags);
         }
     }
 
-    public void addGenre(String genre) {
-        if (genre != null && !genres.contains(genre)) {
-            genres.add(genre);
+    public void addTag(String tag) {
+        if (tag != null && !tags.contains(tag)) {
+            tags.add(tag);
         }
     }
 
-    public void removeGenre(String genre) {
-        genres.remove(genre);
+    public void removeTag(String tag) {
+        tags.remove(tag);
     }
 
 

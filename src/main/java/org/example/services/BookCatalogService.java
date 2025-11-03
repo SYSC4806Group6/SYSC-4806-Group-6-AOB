@@ -106,7 +106,7 @@ public class BookCatalogService {
             return true;
         }
         String targetTag = criteria.getTag().toLowerCase(Locale.ROOT);
-        return book.getGenres().stream()
+        return book.getTags().stream()
                 .anyMatch(tag -> tag != null && tag.toLowerCase(Locale.ROOT).equals(targetTag));
     }
 }

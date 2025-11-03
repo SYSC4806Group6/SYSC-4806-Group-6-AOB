@@ -41,10 +41,10 @@ public interface BookRepository extends JpaRepository<Book, String> {
     List<String> findAllPublishers();
 
     // Returns books matching a tag while maintaining pagination metadata.
-    @Query("select b from Book b join b.genres t where lower(t) = lower(:tag)")
+    @Query("select b from Book b join b.tags t where lower(t) = lower(:tag)")
     Page<Book> findByTag(String tag, Pageable pageable);
 
     // Returns all unique tags so the UI can present filter chips.
-    @Query("select distinct lower(t) from Book b join b.genres t order by lower(t)")
+    @Query("select distinct lower(t) from Book b join b.tags t order by lower(t)")
     List<String> findAllTags();
 }
