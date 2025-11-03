@@ -30,32 +30,35 @@ class BookCatalogServiceTest {
                         new Book(
                                 "9780441172719",
                                 "Dune",
-                                "Epic science fiction.",
-                                List.of("sci-fi", "classic"),
-                                null, // pictureUrl
                                 "Frank Herbert",
                                 "Ace",
-                                14.99
+                                new BigDecimal("14.99"),
+                                "Epic science fiction.",
+                                12,
+                                null,
+                                List.of("sci-fi", "classic")
                         ),
                         new Book(
                                 "9780261103573",
                                 "The Fellowship of the Ring",
-                                "First volume of The Lord of the Rings.",
-                                List.of("fantasy", "adventure"),
-                                null, // pictureUrl
                                 "J.R.R. Tolkien",
                                 "HarperCollins",
-                                12.50
+                                new BigDecimal("12.50"),
+                                "First volume of The Lord of the Rings.",
+                                7,
+                                null,
+                                List.of("fantasy", "adventure")
                         ),
                         new Book(
                                 "9780316769488",
                                 "The Catcher in the Rye",
-                                "Classic novel.",
-                                List.of("classic", "literature"),
-                                null, // pictureUrl
                                 "J. D. Salinger",
                                 "Little, Brown and Company",
-                                10.00
+                                new BigDecimal("10.00"),
+                                "Classic novel.",
+                                3,
+                                null,
+                                List.of("classic", "literature")
                         )
                 )
         );
