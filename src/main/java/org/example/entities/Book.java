@@ -163,4 +163,8 @@ public class Book {
     public char[] getStock() {
         return new char[0];
     }
+
+    //for tests cases that conflicted with alternate version
+    public String getImageUrl() { return this.pictureUrl; }
+    public void setImageUrl(String imageUrl) { this.pictureUrl = imageUrl; }
 }

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${book.isbn} != null ? 'Edit Book' : 'Add Book'"></title>
+    <title th:text="${book.id} != null ? 'Edit Book' : 'Add Book'"></title>
 </head>
 <body>
-<h1 th:text="${book.isbn} != null ? 'Edit Book' : 'Add Book'"></h1>
+<h1 th:text="${book.id} != null ? 'Edit Book' : 'Add Book'"></h1>
 
 <form th:action="@{/admin/books/save}" th:object="${book}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
     <label>ISBN:</label>
-    <input type="text" th:field="*{isbn}" th:readonly="${book.isbn} != null"/><br>
+    <input type="text" th:field="*{isbn}"/><br>
 
     <label>Title:</label>
     <input type="text" th:field="*{title}"/><br>
@@ -25,11 +27,11 @@
     <label>Description:</label>
     <textarea th:field="*{description}"></textarea><br>
 
-    <label>Stock:</label>
-    <input type="number" th:field="*{stock}"/><br>
+    <label>Inventory Quantity:</label>
+    <input type="number" th:field="*{inventoryQuantity}"/><br>
 
-    <label>Image URL:</label>
-    <input type="text" th:field="*{imageUrl}"/><br>
+    <label>Picture URL:</label>
+    <input type="text" th:field="*{pictureUrl}"/><br>
 
     <button type="submit">Save</button>
 </form>

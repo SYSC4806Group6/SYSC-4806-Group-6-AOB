@@ -120,8 +120,8 @@
             <span class="tag" th:each="tag : ${book.tags}" th:text="${tag}">Tag</span>
         </div>
 
-        <div class="stock" th:classappend="${book.stock > 0} ? ' available' : ' unavailable'"
-             th:text="${book.stock > 0 ? 'In stock (' + book.stock + ' left)' : 'Out of stock'}">
+        <div class="stock" th:classappend="${book.inventoryQuantity > 0} ? ' available' : ' unavailable'"
+             th:text="${book.inventoryQuantity > 0 ? 'In stock (' + book.inventoryQuantity + ' left)' : 'Out of stock'}">
         </div>
 
         <div class="actions">
