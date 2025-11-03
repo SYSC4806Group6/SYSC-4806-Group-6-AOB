@@ -39,13 +39,12 @@ class BookControllerTest {
     private final Book dune = new Book(
             "9780441172719",
             "Dune",
+            "Epic science fiction.",
+            List.of("sci-fi", "classic"),
+            null,
             "Frank Herbert",
             "Ace",
-            new BigDecimal("14.99"),
-            "Epic science fiction.",
-            12,
-            null,
-            List.of("sci-fi", "classic")
+            14.99
     );
 
     @Test

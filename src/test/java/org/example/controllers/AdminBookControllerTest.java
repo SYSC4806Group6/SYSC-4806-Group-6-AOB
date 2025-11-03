@@ -34,13 +34,12 @@ class AdminBookControllerTest {
         sampleBook = new Book(
                 "1234567890123",
                 "Sample Book",
-                "John Doe",
-                "Sample Publisher",
-                BigDecimal.valueOf(19.99),
                 "Sample description",
-                10,
+                List.of("fiction"),
                 null,
-                List.of("fiction")
+                "John Doe",
+                "Publisher",
+                12.99
         );
     }
 

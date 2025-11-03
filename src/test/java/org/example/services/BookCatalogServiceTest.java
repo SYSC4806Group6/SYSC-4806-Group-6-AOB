@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.example.entities.Book;
 import org.example.repositories.BookRepository;
@@ -28,37 +29,24 @@ class BookCatalogServiceTest {
         bookRepository.saveAll(
                 List.of(
                         new Book(
-                                "9780441172719",
-                                "Dune",
-                                "Frank Herbert",
-                                "Ace",
-                                new BigDecimal("14.99"),
-                                "Epic science fiction.",
-                                12,
+                                "1234567890123",
+                                "Sample Book",
+                                "Sample description",
+                                List.of("fiction"),
                                 null,
-                                List.of("sci-fi", "classic")
-                        ),
+                                "John Doe",
+                                "Publisher",
+                                12.99
+                                ),
                         new Book(
-                                "9780261103573",
-                                "The Fellowship of the Ring",
-                                "J.R.R. Tolkien",
-                                "HarperCollins",
-                                new BigDecimal("12.50"),
-                                "First volume of The Lord of the Rings.",
-                                7,
-                                null,
-                                List.of("fantasy", "adventure")
-                        ),
-                        new Book(
-                                "9780316769488",
-                                "The Catcher in the Rye",
-                                "J. D. Salinger",
-                                "Little, Brown and Company",
-                                new BigDecimal("10.00"),
-                                "Classic novel.",
-                                3,
-                                null,
-                                List.of("classic", "literature")
+                                "978-0743273565",
+                                "The Great Gatsby",
+                                "A novel about the Jazz Age.",
+                                new ArrayList<>(List.of("Fiction", "Classic")),
+                                "url2.jpg",
+                                "F. Scott Fitzgerald",
+                                "Scribner",
+                                14.99
                         )
                 )
         );
