@@ -30,7 +30,7 @@
 
 ## \## 🚀 Live Deployment 
 
-## - **[Azure App Service URL](https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=fewoi&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12)**
+## - **[Azure App Service URL](https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12)**
 
 ## \- \*\*Health Check Endpoint:\*\* `/actuator/health`
 
