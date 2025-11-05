@@ -58,4 +58,9 @@ public class BookController {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         return "redirect:/books";
     }
+
+    @GetMapping("/cart")
+    public String showCart() {
+        return "cart/cart";
+    }
 }

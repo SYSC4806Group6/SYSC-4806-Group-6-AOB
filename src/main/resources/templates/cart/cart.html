@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AmazinBookStore | Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 1rem 2rem;
+            background-color: #f5f5f5;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            color: #333;
+            text-decoration: none;
+            height: 100%;
+            transition: background-color 0.2s ease;
+        }
+        .cart-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .book-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .book-card {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            background: #fff;
+            border-radius: 8px;
+            padding: 1rem 2rem 1rem 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            gap: 1rem;
+            border: 2px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        .book-card:hover {
+            border-color: #aaa;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: 0.2s ease;
+        }
+
+        .book-card img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #ececec;
+        }
+
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quantity input {
+            width: 50px;
+            padding: 0.25rem;
+            text-align: center;
+        }
+
+        .cart-total {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .actions a, .actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .continue-btn {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .checkout-btn {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .alert {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            background: #ffe6e6;
+            color: #7a1d1d;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .book-card {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Your Cart</h1>
+    <a th:href="@{/books}" class="cart-btn">← Continue Shopping</a>
+</header>
+
+<div th:if="${#lists.isEmpty(cartItems)}" class="alert">
+    Your cart is empty.
+</div>
+
+<section class="book-grid" th:if="${!#lists.isEmpty(cartItems)}">
+    <article class="book-card" th:each="item : ${cartItems}">
+        <img th:if="${item.book.pictureUrl != null}" th:src="${item.book.pictureUrl}" th:alt="${item.book.title}">
+        <div th:if="${item.book.pictureUrl == null}"
+             style="width:150px;height:200px;display:flex;align-items:center;justify-content:center;background:#ececec;border-radius:4px;">
+            <span>No image</span>
+        </div>
+
+        <div class="book-info">
+            <h2 th:text="${item.book.title}">Book Title</h2>
+            <p><strong>Author:</strong> <span th:text="${item.book.author}">Author Name</span></p>
+            <p><strong>Price:</strong> $<span th:text="${item.book.price}">0.00</span></p>
+
+            <div class="quantity">
+                <label>Qty:</label>
+                <form th:action="@{/cart/update}" method="post" style="display:flex;align-items:center;gap:0.5rem;">
+                    <input type="hidden" name="isbn" th:value="${item.book.isbn}">
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+
+            <form th:action="@{/cart/remove}" method="post" style="margin-top:0.5rem;">
+                <input type="hidden" name="isbn" th:value="${item.book.isbn}">
+                <button type="submit" style="background:none;border:none;color:red;cursor:pointer;">Remove</button>
+            </form>
+        </div>
+    </article>
+</section>
+
+<div th:if="${!#lists.isEmpty(cartItems)}" class="cart-total">
+    Total: $<span th:text="${#numbers.formatDecimal(cartTotal, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+</div>
+
+<div class="actions" th:if="${!#lists.isEmpty(cartItems)}">
+    <a th:href="@{/books}" class="continue-btn">← Continue Shopping</a>
+    <form th:action="@{/checkout}" method="post">
+        <button class="checkout-btn" type="submit">Proceed to Checkout</button>
+    </form>
+</div>
+
+</body>
+</html>

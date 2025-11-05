@@ -1,59 +1,68 @@
 package org.example.services;
 
-import org.example.entities.Book;
-import org.example.entities.ShoppingCart;
-import org.example.entities.ShoppingCartItem;
-import org.example.entities.User;
-import org.example.repositories.ShoppingCartRepository;
-import org.example.repositories.ShoppingCartItemRepository;
+import org.example.entities.*;
+import org.example.repositories.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ShoppingCartService {
 
-    private final ShoppingCartRepository cartRepository;
-    private final ShoppingCartItemRepository itemRepository;
+    private final ShoppingCartRepository cartRepo;
+    private final ShoppingCartItemRepository itemRepo;
+    private final BookRepository bookRepo;
 
-    public ShoppingCartService(ShoppingCartRepository cartRepository, ShoppingCartItemRepository itemRepository) {
-        this.cartRepository = cartRepository;
-        this.itemRepository = itemRepository;
+    public ShoppingCartService(ShoppingCartRepository cartRepo,
+                               ShoppingCartItemRepository itemRepo,
+                               BookRepository bookRepo) {
+        this.cartRepo = cartRepo;
+        this.itemRepo = itemRepo;
+        this.bookRepo = bookRepo;
     }
 
-    @Transactional
     public ShoppingCart getOrCreateCart(User user) {
-        ShoppingCart cart = cartRepository.findById(user.getId());
-        if (cart == null) {
-            cart = new ShoppingCart(user);
-            cartRepository.save(cart);
-        }
-        return cart;
+        return cartRepo.findByUser(user).orElseGet(() -> {
+            ShoppingCart newCart = new ShoppingCart(user);
+            return cartRepo.save(newCart);
+        });
     }
 
-    @Transactional
-    public void addBookToCart(User user, Book book) {
+    public void addBookToCart(User user, String isbn) {
         ShoppingCart cart = getOrCreateCart(user);
+        Book book = bookRepo.findByIsbn(isbn);
+        if (book == null) return;
+
         ShoppingCartItem newItem = new ShoppingCartItem(cart, book);
-        cart.addShoppingCartItem(newItem);
-        itemRepository.save(newItem);
-        cartRepository.save(cart);
+
+        if (!cart.addShoppingCartItem(newItem)) {
+            // Book already existed, quantity incremented inside addShoppingCartItem
+        } else {
+            newItem.setShoppingCart(cart);
+            itemRepo.save(newItem);
+        }
+        cartRepo.save(cart);
     }
 
-    @Transactional
-    public void removeBookFromCart(User user, Book book) {
+    public void updateQuantity(User user, String isbn, int quantity) {
         ShoppingCart cart = getOrCreateCart(user);
-        ShoppingCartItem item = cart.getItems().stream()
-                .filter(i -> i.getBook().equals(book))
+        cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(isbn))
                 .findFirst()
-                .orElse(null);
-        if (item != null) {
-            cart.removeShoppingCartItem(item);
-            itemRepository.save(item); // update or delete based on quantity
-        }
-        cartRepository.save(cart);
+                .ifPresent(i -> {
+                    i.setQuantity(quantity);
+                    itemRepo.save(i);
+                });
+    }
+
+    public void removeBook(User user, String isbn) {
+        ShoppingCart cart = getOrCreateCart(user);
+        cart.getItems().removeIf(i -> i.getBook().getIsbn().equals(isbn));
+        cartRepo.save(cart);
     }
 
     public double getTotal(User user) {
-        return getOrCreateCart(user).getAndCalculateTotalCartPrice();
+        ShoppingCart cart = getOrCreateCart(user);
+        return cart.getAndCalculateTotalCartPrice();
     }
 }
