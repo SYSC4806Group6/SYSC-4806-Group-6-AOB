@@ -59,8 +59,4 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @GetMapping("/cart")
-    public String showCart() {
-        return "cart/cart";
-    }
 }
