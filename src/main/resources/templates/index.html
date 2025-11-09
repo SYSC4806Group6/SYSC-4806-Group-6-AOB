@@ -38,8 +38,8 @@
         <td th:text="${book.price}"></td>
         <td th:text="${book.inventoryQuantity}"></td>
         <td class="actions">
-            <a th:href="@{/admin/editBook(isbn=${book.isbn})}">✏️ Edit</a>
-            <a th:href="@{/admin/deleteBook(isbn=${book.isbn})}">🗑️ Delete</a>
+            <a th:href="@{/admin/editBook(isbn=${book.isbn})}">Edit</a>
+            <a th:href="@{/admin/deleteBook(isbn=${book.isbn})}">Delete</a>
         </td>
     </tr>
     </tbody>
