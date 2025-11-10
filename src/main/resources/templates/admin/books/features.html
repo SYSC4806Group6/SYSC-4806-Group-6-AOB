@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Feature Toggles</title>
+</head>
+<body>
+<h1>Feature Toggles</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+        <th>Feature</th>
+        <th>Status</th>
+        <th>Toggle</th>
+    </tr>
+
+    <tr th:each="feature : ${features}">
+        <td th:text="${feature.uid}"></td>
+        <td th:text="${feature.enable ? 'Enabled' : 'Disabled'}"></td>
+        <td>
+            <form th:action="@{/admin/features/toggle}" method="post">
+                <input type="hidden" name="featureName" th:value="${feature.uid}" />
+                <input type="checkbox" name="enabled"
+                       th:checked="${feature.enable}"
+                       onchange="this.form.submit()">
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

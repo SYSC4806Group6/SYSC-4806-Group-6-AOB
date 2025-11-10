@@ -64,6 +64,11 @@
           <artifactId>spring-boot-starter-test</artifactId>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>org.ff4j</groupId>
+          <artifactId>ff4j-core</artifactId>
+          <version>1.8.12</version>
+      </dependency>
   </dependencies>
 
     <build>
