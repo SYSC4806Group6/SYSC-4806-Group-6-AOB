@@ -146,6 +146,10 @@
                     <button type="submit">Logout</button>
                 </form>
             </div>
+
+            <a th:href="@{/admin/books}" sec:authorize="hasRole('ADMIN')" class="admin-button">
+                Admin Panel
+            </a>
         </div>
     </div>
 </header>

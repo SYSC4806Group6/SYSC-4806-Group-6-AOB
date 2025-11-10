@@ -1,6 +1,6 @@
 package org.example.config;
 
-import org.example.services.CustomUserDetailsService;
+import org.example.services.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,17 +20,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
+    // Filter the security for actions based on USER ROLE
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
+
+                        .requestMatchers("/register").permitAll()
                         // Allow access to public pages like home, book list, and details
                         .requestMatchers("/", "/books", "/books/**").permitAll()
                         // Allow access to static resources (if you have them)

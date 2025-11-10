@@ -12,7 +12,7 @@ import org.example.entities.Book;
 import org.example.services.BookCatalogService;
 import org.example.services.BookNotFoundException;
 import org.example.services.BookSearchCriteria;
-import org.example.services.CustomUserDetailsService;
+import org.example.services.CustomUserDetailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,7 +41,7 @@ class BookControllerTest {
     private BookCatalogService catalogService;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailService customUserDetailService;
 
     private final Book dune = new Book(
             "9780441172719",

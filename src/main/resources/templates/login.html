@@ -54,15 +54,10 @@
     </form>
 
     <div class="divider">OR</div>
-
-    <div class="oauth-buttons">
-        <a th:href="@{/oauth2/authorization/google}" class="oauth-button google-btn">
-            Login with Google
-        </a>
-        <a th:href="@{/oauth2/authorization/github}" class="oauth-button github-btn">
-            Login with GitHub
-        </a>
-    </div>
+    <p>
+        Don't have an account?
+        <a th:href="@{/register}">Register here</a>
+    </p>
 </div>
 
 </body>

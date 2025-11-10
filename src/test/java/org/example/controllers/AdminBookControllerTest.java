@@ -2,7 +2,7 @@ package org.example.controllers;
 
 import org.example.entities.Book;
 import org.example.repositories.BookRepository;
-import org.example.services.CustomUserDetailsService;
+import org.example.services.CustomUserDetailService;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class AdminBookControllerTest {
     private BookRepository bookRepository;
 
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailService customUserDetailService;
 
     private Book sampleBook;
 
