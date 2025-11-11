@@ -3,6 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>AmazinBookStore | Catalog</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -367,12 +369,13 @@
                 const isbn = this.getAttribute("data-isbn");
 
                 // Get the CSRF token if it exists (for logged-in users)
-                const token = document.querySelector('meta[name="_csrf"]');
+                const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
+                const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
                 const headers = {
                     'Content-Type': 'application/json'
                 };
-                if (token) {
-                    headers[token.getAttribute('name')] = token.getAttribute('content');
+                if (csrfTokenMeta && csrfHeaderMeta) {
+                    headers[csrfHeaderMeta.getAttribute('content')] = csrfTokenMeta.getAttribute('content');
                 }
 
                 fetch(`/cart/add/${isbn}`, {
