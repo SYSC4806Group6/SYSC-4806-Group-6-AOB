@@ -3,8 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>AmazinBookStore | Catalog</title>
-    <meta name="_csrf" th:content="${_csrf.token}">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,7 +58,7 @@
             font-family: Arial, sans-serif;
             font-size: 1em;
         }
-        .search-form, .filters {
+        .search-form {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
@@ -129,6 +127,113 @@
             min-width: 22px;
             text-align: center;
         }
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .filters-panel {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+            position: sticky;
+            top: 1rem;
+        }
+        .filter-group {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+        .filter-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111827;
+            padding: 1rem 0;
+            cursor: pointer;
+        }
+        .filter-toggle .chevron {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .filter-group.open .filter-toggle .chevron {
+            transform: rotate(180deg);
+        }
+        .filter-body {
+            max-height: 0;
+            overflow: hidden;
+            padding-bottom: 0;
+            transition: max-height 0.25s ease, padding-bottom 0.25s ease;
+        }
+        .filter-group.open .filter-body {
+            padding-bottom: 1rem;
+        }
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+        .filter-option input {
+            display: none;
+        }
+        .checkbox-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1.5px solid #cbd5f5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .checkbox-box::after {
+            content: "✔";
+            font-size: 0.8rem;
+            color: transparent;
+            transition: color 0.2s ease;
+        }
+        .filter-option:hover .checkbox-box::after {
+            color: #94a3b8;
+        }
+        .filter-option input:checked + .checkbox-box {
+            background: #111827;
+            border-color: #111827;
+        }
+        .filter-option input:checked + .checkbox-box::after {
+            color: #fff;
+        }
+        .filter-actions {
+            margin-top: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .filter-actions button {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            border: none;
+            background: #111827;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .book-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -175,6 +280,15 @@
             color: #fff;
             border-color: #333;
         }
+        @media (max-width: 1000px) {
+            .catalog-layout {
+                grid-template-columns: 1fr;
+            }
+            .filters-panel {
+                position: static;
+                width: 100%;
+            }
+        }
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -188,10 +302,6 @@
                 justify-content: center;
                 flex-wrap: wrap;
                 margin-top: 1rem;
-            }
-            .filters {
-                flex-direction: column;
-                align-items: stretch;
             }
             .search-form {
                 width: 100%;
@@ -249,66 +359,117 @@
     </div>
 </header>
 
-<section class="filters">
-    <form th:action="@{/books}" method="get">
-        <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
-        <label>
-            Publisher
-            <select name="publisher">
-                <option value="" th:selected="${!criteria.hasPublisher()}">All publishers</option>
-                <option th:each="publisher : ${publishers}"
-                        th:value="${publisher}"
-                        th:text="${publisher}"
-                        th:selected="${criteria.publisher != null ? #strings.equalsIgnoreCase(publisher, criteria.publisher) : false}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Tag
-            <select name="tag">
-                <option value="" th:selected="${!criteria.hasTag()}">All tags</option>
-                <option th:each="tagItem : ${tags}"
-                        th:value="${tagItem}"
-                        th:text="${tagItem}"
-                        th:selected="${criteria.tag != null ? #strings.equalsIgnoreCase(tagItem, criteria.tag) : false}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Sort by
-            <select name="sortBy">
-                <option th:each="sortOption : ${sortOptions}"
-                        th:value="${sortOption}"
-                        th:text="${#strings.capitalize(sortOption)}"
-                        th:selected="${criteria.sortBy != null ? sortOption.equalsIgnoreCase(criteria.sortBy) : sortOption == 'title'}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Direction
-            <select name="sortDirection">
-                <option th:each="direction : ${directions}"
-                        th:value="${direction.name()}"
-                        th:text="${direction.name()}"
-                        th:selected="${criteria.sortDirection != null ? direction == criteria.sortDirection : direction.name() == 'ASC'}">
-                </option>
-            </select>
-        </label>
-        <button type="submit">Apply Filters</button>
-        <input type="hidden" name="size" th:value="${page.size}">
-    </form>
-</section>
+<div class="catalog-layout">
+    <aside class="filters-panel">
+        <form th:action="@{/books}" method="get">
+            <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
+            <input type="hidden" name="size" th:value="${page.size}">
 
-<div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
+            <div class="filter-group open" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Publisher
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="radio" name="publisher" value=""
+                                   th:checked="${!criteria.hasPublisher()}">
+                            <span class="checkbox-box"></span>
+                            <span>All Publishers</span>
+                        </label>
+                        <label class="filter-option"
+                               th:each="publisher : ${publishers}">
+                            <input type="radio" name="publisher"
+                                   th:value="${publisher}"
+                                   th:checked="${criteria.publisher != null ? #strings.equalsIgnoreCase(publisher, criteria.publisher) : false}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${publisher}">Publisher</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-<section th:if="${#lists.isEmpty(books)}">
-    <p>No books found. Try adjusting your search or filters.</p>
-</section>
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Tag
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="radio" name="tag" value=""
+                                   th:checked="${!criteria.hasTag()}">
+                            <span class="checkbox-box"></span>
+                            <span>All Tags</span>
+                        </label>
+                        <label class="filter-option"
+                               th:each="tagItem : ${tags}">
+                            <input type="radio" name="tag"
+                                   th:value="${tagItem}"
+                                   th:checked="${criteria.tag != null ? #strings.equalsIgnoreCase(tagItem, criteria.tag) : false}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${tagItem}">Tag</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-<section class="book-grid" th:if="${!#lists.isEmpty(books)}">
-    <article class="book-card" th:each="book : ${books}">
-        <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">
-            <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Sort by
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option"
+                               th:each="sortOption : ${sortOptions}">
+                            <input type="radio" name="sortBy"
+                                   th:value="${sortOption}"
+                                   th:checked="${criteria.sortBy != null ? sortOption.equalsIgnoreCase(criteria.sortBy) : sortOption == 'title'}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${#strings.capitalize(sortOption)}">Sort</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Direction
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option"
+                               th:each="direction : ${directions}">
+                            <input type="radio" name="sortDirection"
+                                   th:value="${direction.name()}"
+                                   th:checked="${criteria.sortDirection != null ? direction == criteria.sortDirection : direction.name() == 'ASC'}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${direction.name()}">Direction</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Apply Filters</button>
+            </div>
+        </form>
+    </aside>
+
+    <div class="catalog-content">
+        <div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
+
+        <section th:if="${#lists.isEmpty(books)}">
+            <p>No books found. Try adjusting your search or filters.</p>
+        </section>
+
+        <section class="book-grid" th:if="${!#lists.isEmpty(books)}">
+            <article class="book-card" th:each="book : ${books}">
+                <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">
+                    <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
             <div th:if="${book.pictureUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
                 <span>No image</span>
             </div>
@@ -327,55 +488,83 @@
             <button type="submit">Add to Cart</button>
         </form>
     </article>
-</section>
+        </section>
 
-<nav class="pagination" th:if="${page.totalPages > 1}">
-    <span th:if="${page.isFirst()}">First</span>
-    <a th:if="${!page.isFirst()}"
-       th:href="@{/books(page=0, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        First
-    </a>
-    <span th:if="${!page.hasPrevious()}">Prev</span>
-    <a th:if="${page.hasPrevious()}"
-       th:href="@{/books(page=${page.number - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Prev
-    </a>
-    <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-          th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
-        <span th:if="${i == page.number}"
-              th:text="${i + 1}"
-              class="active"></span>
-        <a th:if="${i != page.number}"
-           th:text="${i + 1}"
-           th:href="@{/books(page=${i}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}"></a>
-    </span>
-    <span th:if="${!page.hasNext()}">Next</span>
-    <a th:if="${page.hasNext()}"
-       th:href="@{/books(page=${page.number + 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Next
-    </a>
-    <span th:if="${page.isLast()}">Last</span>
-    <a th:if="${!page.isLast()}"
-       th:href="@{/books(page=${page.totalPages - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Last
-    </a>
-</nav>
-
+        <nav class="pagination" th:if="${page.totalPages > 1}">
+            <span th:if="${page.isFirst()}">First</span>
+            <a th:if="${!page.isFirst()}"
+               th:href="@{/books(page=0, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                First
+            </a>
+            <span th:if="${!page.hasPrevious()}">Prev</span>
+            <a th:if="${page.hasPrevious()}"
+               th:href="@{/books(page=${page.number - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Prev
+            </a>
+            <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                  th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
+                <span th:if="${i == page.number}"
+                      th:text="${i + 1}"
+                      class="active"></span>
+                <a th:if="${i != page.number}"
+                   th:text="${i + 1}"
+                   th:href="@{/books(page=${i}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}"></a>
+            </span>
+            <span th:if="${!page.hasNext()}">Next</span>
+            <a th:if="${page.hasNext()}"
+               th:href="@{/books(page=${page.number + 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Next
+            </a>
+            <span th:if="${page.isLast()}">Last</span>
+            <a th:if="${!page.isLast()}"
+               th:href="@{/books(page=${page.totalPages - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Last
+            </a>
+        </nav>
+    </div>
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const filterGroups = document.querySelectorAll("[data-filter-group]");
+        filterGroups.forEach(group => {
+            const toggle = group.querySelector(".filter-toggle");
+            const body = group.querySelector(".filter-body");
+
+            const updateState = () => {
+                const isOpen = group.classList.contains("open");
+                toggle.setAttribute("aria-expanded", isOpen);
+                if (isOpen) {
+                    body.style.maxHeight = body.scrollHeight + "px";
+                } else {
+                    body.style.maxHeight = null;
+                }
+            };
+
+            updateState();
+
+            toggle.addEventListener("click", () => {
+                group.classList.toggle("open");
+                updateState();
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            document.querySelectorAll("[data-filter-group].open .filter-body")
+                .forEach(body => body.style.maxHeight = body.scrollHeight + "px");
+        });
+
         document.querySelectorAll(".add-to-cart-form").forEach(form => {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const isbn = this.getAttribute("data-isbn");
 
                 // Get the CSRF token if it exists (for logged-in users)
-                const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
-                const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+                const token = document.querySelector('meta[name="_csrf"]');
                 const headers = {
                     'Content-Type': 'application/json'
                 };
-                if (csrfTokenMeta && csrfHeaderMeta) {
-                    headers[csrfHeaderMeta.getAttribute('content')] = csrfTokenMeta.getAttribute('content');
+                if (token) {
+                    headers[token.getAttribute('name')] = token.getAttribute('content');
                 }
 
                 fetch(`/cart/add/${isbn}`, {
