@@ -42,6 +42,11 @@ public class ShoppingCartController {
         return Map.of("itemCount", cart.getItems().size());
     }
 
+    @GetMapping
+    public String showCart() {
+        return "cart/cart";
+    }
+
     /* To view cart (coming soon)
     @GetMapping
     public String viewCart(@SessionAttribute("loggedInUser") User user, Model model) {

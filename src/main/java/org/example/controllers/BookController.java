@@ -8,6 +8,7 @@ import org.example.entities.ShoppingCart;
 import org.example.services.BookCatalogService;
 import org.example.services.BookNotFoundException;
 import org.example.services.BookSearchCriteria;
+import org.ff4j.FF4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BookController {
 
     private final BookCatalogService bookCatalogService;
+    private final FF4j ff4j;
 
-    public BookController(BookCatalogService bookCatalogService) {
+    public BookController(BookCatalogService bookCatalogService, FF4j ff4j) {
         this.bookCatalogService = bookCatalogService;
+        this.ff4j = ff4j;
     }
 
     @GetMapping("/books")
@@ -43,6 +46,9 @@ public class BookController {
         int cartSize = cart != null ? cart.getItems().size() : 0;
         model.addAttribute("cartSize", cartSize);
 
+        model.addAttribute("showAddToCart", ff4j.check("showAddToCart"));
+        model.addAttribute("newCatalogLayout", ff4j.check("newCatalogLayout"));
+
         return "books/list";
     }
 
@@ -58,4 +64,5 @@ public class BookController {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         return "redirect:/books";
     }
+
 }
