@@ -2,12 +2,15 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue
     private long id;
@@ -111,6 +114,38 @@ public class User {
     }
     public void setPurchaseReceipts(List<PurchaseReceipt> purchaseReceipts) {
         this.purchaseReceipts = purchaseReceipts;
+    }
+
+    @Override
+    public java.util.Collection<? extends GrantedAuthority> getAuthorities() {
+        // We MUST prefix the role with "ROLE_" for Spring's .hasRole() checks to work
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + this.userRole.name());
+        return java.util.List.of(authority);
+    }
+
+    /**
+     * These methods are also required by UserDetails.
+     * For now, we can just return 'true' to indicate that
+     * all accounts are active and valid by default.
+     */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     /**
