@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Order #' + ${receipt.id}">Receipt Details</title>
+    <style>
+        /* --- Copied from details.html --- */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #fafafa;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .auth-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        /* Style for the logout form so it looks like a link */
+        .auth-controls form {
+            margin: 0;
+            padding: 0;
+        }
+        .auth-controls button {
+            background: none;
+            border: none;
+            color: #0000EE; /* Default link color */
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .secondary {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            background: #ececec;
+            color: #333;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* --- New styles for this page --- */
+        .summary {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+        .summary p {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .items-table th, .items-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .items-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .items-table td:nth-of-type(3), /* Price */
+        .items-table td:nth-of-type(4), /* Qty */
+        .items-table td:nth-of-type(5)  /* Line Total */
+        {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <h1>AmazinBookStore</h1>
+        </div>
+        <div class="header-right">
+            <div class="header-receipts">
+                <a th:href="@{/purchaseReceipts}">Receipts</a>
+            </div>
+            <div class="auth-controls">
+                <div sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}">Login</a>
+                </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <span sec:authentication="name">Username</span>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+
+                <a th:href="@{/admin/books}" sec:authorize="hasRole('ADMIN')" class="admin-button">
+                    Admin Panel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <a class="secondary" th:href="@{/purchaseReceipts}">← Back to My Receipts</a>
+
+    <section class="container" th:if="${receipt}">
+
+        <h1 th:text="'Order #' + ${receipt.id}">Receipt Details</h1>
+
+        <div class="summary">
+            <p><strong>Order Date:</strong> <span th:text="${#temporals.format(receipt.orderDateTime, 'yyyy-MM-dd HH:mm')}">2025-11-10 12:00</span></p>
+            <p><strong>Order Total:</strong> <span th:text="${#numbers.formatDecimal(receipt.totalCost, 1, 'COMMA', 2, 'POINT')}">$0.00</span></p>
+        </div>
+
+        <h2>Items</h2>
+        <table class="items-table">
+            <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Price at Purchase</th>
+                <th>Quantity</th>
+                <th>Line Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${receipt.items}">
+                <td th:text="${item.book.title}">Book Title</td>
+                <td th:text="${item.book.author}">Book Author</td>
+                <td th:text="${#numbers.formatDecimal(item.pricePerBook, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+                <td th:text="${item.quantity}">0</td>
+                <td th:text="${#numbers.formatDecimal(item.pricePerBook * item.quantity, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+    <div th:if="${receipt == null}">
+        <p>Receipt not found.</p>
+    </div>
+
+</body>
+</html>

@@ -131,6 +131,10 @@
     </div>
 
     <div class="header-right">
+        <div class="header-receipts">
+            <a th:href="@{/purchaseReceipts}">Receipts</a>
+        </div>
+
         <div class="header-cart">
             Cart: <span id="cart-count" th:text="${cartSize}">0</span> items
         </div>
