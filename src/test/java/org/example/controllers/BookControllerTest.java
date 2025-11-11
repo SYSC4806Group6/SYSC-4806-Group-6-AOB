@@ -5,17 +5,20 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import java.math.BigDecimal;
 import java.util.List;
+
+import org.example.config.SecurityConfig;
 import org.example.entities.Book;
 import org.example.services.BookCatalogService;
 import org.example.services.BookNotFoundException;
 import org.example.services.BookSearchCriteria;
 import org.ff4j.FF4j;
+import org.example.services.CustomUserDetailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(BookController.class)
+@Import(SecurityConfig.class)
 class BookControllerTest {
 
     @Autowired
@@ -39,6 +43,7 @@ class BookControllerTest {
 
     @MockBean
     private FF4j ff4j;
+    private CustomUserDetailService customUserDetailService;
 
     private final Book dune = new Book(
             "9780441172719",

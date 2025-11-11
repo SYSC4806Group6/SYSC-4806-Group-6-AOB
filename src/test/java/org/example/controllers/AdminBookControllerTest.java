@@ -2,6 +2,8 @@ package org.example.controllers;
 
 import org.example.entities.Book;
 import org.example.repositories.BookRepository;
+import org.example.services.CustomUserDetailService;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -10,15 +12,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AdminBookController.class)
+@WithMockUser(roles="ADMIN")
 class AdminBookControllerTest {
 
     @Autowired
@@ -26,6 +29,9 @@ class AdminBookControllerTest {
 
     @MockBean
     private BookRepository bookRepository;
+
+    @MockBean
+    private CustomUserDetailService customUserDetailService;
 
     private Book sampleBook;
 
@@ -92,6 +98,7 @@ class AdminBookControllerTest {
                         .param("price", String.valueOf(sampleBook.getPrice()))
                         .param("stock", String.valueOf(sampleBook.getStock()))
                         .param("description", sampleBook.getDescription())
+                        .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/books"));
