@@ -250,10 +250,15 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
         .book-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 18px 30px rgba(15, 23, 42, 0.15);
+        }
+        .book-card:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 3px;
         }
         .book-card img {
             width: 100%;
@@ -277,11 +282,12 @@
             align-items: center;
             justify-content: space-between;
             margin-top: auto;
+            gap: 1rem;
         }
-        .details-link {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 600;
+        .price-pill {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #111827;
         }
         .add-to-cart-form {
             margin: 0;
@@ -516,34 +522,40 @@
         </section>
 
         <section class="book-grid" th:if="${!#lists.isEmpty(books)}">
-            <article class="book-card" th:each="book : ${books}">
-                <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">
+            <article class="book-card"
+                     th:each="book : ${books}"
+               th:attr="data-href=@{/books/{isbn}(isbn=${book.isbn})}"
+                     role="link"
+                     tabindex="0">
+                <div>
                     <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
-            <div th:if="${book.pictureUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
-                <span>No image</span>
-            </div>
-        </a>
-        <h2 th:text="${book.title}">Book Title</h2>
-        <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
-        <p><strong>Price:</strong> <span th:text="${#numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">$0.00</span></p>
-        <div class="book-extra">
-            <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
-            <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
-            <p th:if="${!#lists.isEmpty(book.tags)}">
-                <strong>Tags:</strong>
-                <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
-            </p>
-        </div>
-        <div class="card-actions">
-            <a th:href="@{/books/{isbn}(isbn=${book.isbn})}" class="details-link">Details</a>
-            <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
-                <button type="submit" class="add-to-cart-btn">
-                    <span>Add to Cart</span>
-                </button>
-            </form>
-        </div>
-    </article>
-</section>
+                    <div th:if="${book.pictureUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
+                        <span>No image</span>
+                    </div>
+                </div>
+                <h2 th:text="${book.title}">Book Title</h2>
+                <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
+                <div class="book-extra">
+                    <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
+                    <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
+                    <p th:if="${!#lists.isEmpty(book.tags)}">
+                        <strong>Tags:</strong>
+                        <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <span class="price-pill"
+                          th:text="${'$' + #numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">
+                        $0.00
+                    </span>
+                    <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
+                        <button type="submit" class="add-to-cart-btn" onclick="event.stopPropagation();">
+                            <span>Add to Cart</span>
+                        </button>
+                    </form>
+                </div>
+            </article>
+        </section>
 
         <nav class="pagination" th:if="${page.totalPages > 1}">
             <span th:if="${page.isFirst()}">First</span>
@@ -608,18 +620,42 @@
                 .forEach(body => body.style.maxHeight = body.scrollHeight + "px");
         });
 
+        document.querySelectorAll(".book-card").forEach(card => {
+            const navigate = () => {
+                const href = card.getAttribute("data-href");
+                if (href) {
+                    window.location.href = href;
+                }
+            };
+            card.addEventListener("click", event => {
+                if (event.target.closest("form")) {
+                    return;
+                }
+                navigate();
+            });
+            card.addEventListener("keypress", event => {
+                if ((event.key === "Enter" || event.key === " ") && !event.target.closest("form")) {
+                    event.preventDefault();
+                    navigate();
+                }
+            });
+        });
+
+        const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
+        const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+
         document.querySelectorAll(".add-to-cart-form").forEach(form => {
+            form.addEventListener("click", event => event.stopPropagation());
+
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const isbn = this.getAttribute("data-isbn");
 
-                // Get the CSRF token if it exists (for logged-in users)
-                const token = document.querySelector('meta[name="_csrf"]');
                 const headers = {
                     'Content-Type': 'application/json'
                 };
-                if (token) {
-                    headers[token.getAttribute('name')] = token.getAttribute('content');
+                if (csrfTokenMeta && csrfHeaderMeta) {
+                    headers[csrfHeaderMeta.getAttribute('content')] = csrfTokenMeta.getAttribute('content');
                 }
 
                 fetch(`/cart/add/${isbn}`, {
@@ -628,7 +664,6 @@
                 })
                     .then(response => {
                         if (response.status === 403) {
-                            // Redirect to login if not authenticated
                             window.location.href = '/login';
                         }
                         return response.json();
