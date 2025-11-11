@@ -43,6 +43,8 @@ class BookControllerTest {
 
     @MockBean
     private FF4j ff4j;
+
+    @MockBean
     private CustomUserDetailService customUserDetailService;
 
     private final Book dune = new Book(
