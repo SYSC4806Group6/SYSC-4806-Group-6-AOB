@@ -21,12 +21,12 @@ public class ShoppingCartController {
 
     private final BookCatalogService bookCatalogService;
 
+    @Autowired
+    private ShoppingCartService ShoppingCartService;
+
     public ShoppingCartController(BookCatalogService bookCatalogService) {
         this.bookCatalogService = bookCatalogService;
     }
-
-    @Autowired
-    private ShoppingCartService ShoppingCartService;
 
     @PostMapping("/add/{isbn}")
     @ResponseBody
@@ -42,5 +42,19 @@ public class ShoppingCartController {
 
         int itemCount = ShoppingCartService.getTotalItemCount(cart);
         return Map.of("itemCount", itemCount);
+    }
+
+    @GetMapping
+    public String viewCart(HttpSession session, Model model) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+
+        model.addAttribute("cartItems", cart.getItems());
+        model.addAttribute("totalPrice", cart.getAndCalculateTotalCartPrice());
+
+        return "cart/cart";
     }
 }
