@@ -1,0 +1,93 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="28.2.9">
+  <diagram id="Jb2U7Mt7WpaV4__hj-Y7" name="Page-1">
+    <mxGraphModel dx="1751" dy="1339" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="node5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Book&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ Book(): &lt;br/&gt;+ Book(String, String, String, List&amp;lt;String&amp;gt;, String, String, String, double): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- title: String&lt;br/&gt;- author: String&lt;br/&gt;- publisher: String&lt;br/&gt;- shoppingCartItems: List&amp;lt;ShoppingCartItem&amp;gt;&lt;br/&gt;- price: double&lt;br/&gt;- purchaseReceiptItems: List&amp;lt;PurchaseReceiptItem&amp;gt;&lt;br/&gt;- description: String&lt;br/&gt;- inventoryQuantity: int&lt;br/&gt;- isbn: String&lt;br/&gt;- tags: List&amp;lt;String&amp;gt;&lt;br/&gt;- pictureUrl: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ setDescription(String): void&lt;br/&gt;+ getPurchaseReceiptItems(): List&amp;lt;PurchaseReceiptItem&amp;gt;&lt;br/&gt;+ setPictureUrl(String): void&lt;br/&gt;+ setImageUrl(String): void&lt;br/&gt;+ removeTag(String): void&lt;br/&gt;+ getPublisher(): String&lt;br/&gt;+ getDescription(): String&lt;br/&gt;+ getTags(): List&amp;lt;String&amp;gt;&lt;br/&gt;+ addPurchaseReceiptItem(PurchaseReceiptItem): boolean&lt;br/&gt;+ getShoppingCartItems(): List&amp;lt;ShoppingCartItem&amp;gt;&lt;br/&gt;+ getStock(): char[]&lt;br/&gt;+ getPrice(): double&lt;br/&gt;+ addTag(String): void&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ getImageUrl(): String&lt;br/&gt;+ getId(): String&lt;br/&gt;+ getIsbn(): String&lt;br/&gt;+ setTitle(String): void&lt;br/&gt;+ setId(String): void&lt;br/&gt;+ getAuthor(): String&lt;br/&gt;+ setInventoryQuantity(int): void&lt;br/&gt;+ hashCode(): int&lt;br/&gt;+ setTags(List&amp;lt;String&amp;gt;): void&lt;br/&gt;+ getTitle(): String&lt;br/&gt;+ setAuthor(String): void&lt;br/&gt;+ setIsbn(String): void&lt;br/&gt;+ setPublisher(String): void&lt;br/&gt;+ addShoppingCartItem(ShoppingCartItem): boolean&lt;br/&gt;+ getPictureUrl(): String&lt;br/&gt;+ setPrice(double): void&lt;br/&gt;+ getInventoryQuantity(): int&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="-75" y="-396" width="399" height="1097" as="geometry" />
+        </mxCell>
+        <mxCell id="node3" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;PurchaseReceipt&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ PurchaseReceipt(User): &lt;br/&gt;+ PurchaseReceipt(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- orderDateTime: LocalDateTime&lt;br/&gt;- user: User&lt;br/&gt;- items: List&amp;lt;PurchaseReceiptItem&amp;gt;&lt;br/&gt;- id: long&lt;br/&gt;- totalCost: double&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getUser(): User&lt;br/&gt;+ getId(): long&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ getTotalCost(): double&lt;br/&gt;+ removePurchaseReceiptItem(PurchaseReceiptItem): boolean&lt;br/&gt;+ setUser(User): void&lt;br/&gt;+ setOrderDateTime(LocalDateTime): void&lt;br/&gt;+ setId(int): void&lt;br/&gt;+ getItems(): List&amp;lt;PurchaseReceiptItem&amp;gt;&lt;br/&gt;+ setItems(List&amp;lt;PurchaseReceiptItem&amp;gt;): void&lt;br/&gt;+ getOrderDateTime(): LocalDateTime&lt;br/&gt;+ addPurchaseReceiptItem(PurchaseReceiptItem): boolean&lt;br/&gt;+ calculateAndSetTotalCost(): void&lt;br/&gt;+ setTotalCost(double): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="969" y="156" width="422" height="545" as="geometry" />
+        </mxCell>
+        <mxCell id="node0" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;PurchaseReceiptItem&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ PurchaseReceiptItem(): &lt;br/&gt;+ PurchaseReceiptItem(PurchaseReceipt, Book, int, double): &lt;br/&gt;+ PurchaseReceiptItem(PurchaseReceipt, ShoppingCartItem): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- purchaseReceipt: PurchaseReceipt&lt;br/&gt;- quantity: int&lt;br/&gt;- id: long&lt;br/&gt;- book: Book&lt;br/&gt;- pricePerBook: double&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ setPricePerBook(double): void&lt;br/&gt;+ setId(int): void&lt;br/&gt;+ getPricePerBook(): double&lt;br/&gt;+ getQuantity(): int&lt;br/&gt;+ setQuantity(int): void&lt;br/&gt;+ getId(): long&lt;br/&gt;+ getBook(): Book&lt;br/&gt;+ getPurchaseReceipt(): PurchaseReceipt&lt;br/&gt;+ setBook(Book): void&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ setPurchaseReceipt(PurchaseReceipt): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="452" y="204" width="418" height="497" as="geometry" />
+        </mxCell>
+        <mxCell id="node6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ShoppingCart&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ShoppingCart(): &lt;br/&gt;+ ShoppingCart(User): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- user: User&lt;br/&gt;- items: List&amp;lt;ShoppingCartItem&amp;gt;&lt;br/&gt;- id: long&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ addShoppingCartItem(ShoppingCartItem): boolean&lt;br/&gt;+ setUser(User): void&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ getId(): long&lt;br/&gt;+ getUser(): User&lt;br/&gt;+ setItems(List&amp;lt;ShoppingCartItem&amp;gt;): void&lt;br/&gt;+ removeShoppingCartItem(ShoppingCartItem): boolean&lt;br/&gt;+ setId(long): void&lt;br/&gt;+ getAndCalculateTotalCartPrice(): double&lt;br/&gt;+ getItems(): List&amp;lt;ShoppingCartItem&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="969" y="-396" width="383" height="401" as="geometry" />
+        </mxCell>
+        <mxCell id="node1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ShoppingCartItem&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ShoppingCartItem(ShoppingCart, Book, int): &lt;br/&gt;+ ShoppingCartItem(Book, int): &lt;br/&gt;+ ShoppingCartItem(ShoppingCart, Book): &lt;br/&gt;+ ShoppingCartItem(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- shoppingCart: ShoppingCart&lt;br/&gt;- id: long&lt;br/&gt;- quantity: int&lt;br/&gt;- book: Book&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getAndCalculateTotalItemPrice(): double&lt;br/&gt;+ setShoppingCart(ShoppingCart): void&lt;br/&gt;+ setBook(Book): void&lt;br/&gt;+ setQuantity(int): void&lt;br/&gt;+ getQuantity(): int&lt;br/&gt;+ getBook(): Book&lt;br/&gt;+ setId(int): void&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ getShoppingCart(): ShoppingCart&lt;br/&gt;+ getId(): long&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="452" y="-396" width="321" height="473" as="geometry" />
+        </mxCell>
+        <mxCell id="node4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;USER_ROLE&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ USER_ROLE(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ CUSTOMER: &lt;br/&gt;+ ADMIN: &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ values(): USER_ROLE[]&lt;br/&gt;+ valueOf(String): USER_ROLE&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1576.5" y="450" width="221" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;strokeWidth=4;endSize=14;dashPattern=1 1;" edge="1" parent="1" source="node2" target="node4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="node2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;User&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ User(String, String, String, USER_ROLE): &lt;br/&gt;+ User(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- password: String&lt;br/&gt;- email: String&lt;br/&gt;- purchaseReceipts: List&amp;lt;PurchaseReceipt&amp;gt;&lt;br/&gt;- userRole: USER_ROLE&lt;br/&gt;- username: String&lt;br/&gt;- shoppingCart: ShoppingCart&lt;br/&gt;- id: long&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ addPurchaseReceipt(PurchaseReceipt): boolean&lt;br/&gt;+ setId(int): void&lt;br/&gt;+ isAccountNonExpired(): boolean&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ isCredentialsNonExpired(): boolean&lt;br/&gt;+ getPurchaseReceipts(): List&amp;lt;PurchaseReceipt&amp;gt;&lt;br/&gt;+ setUserRole(USER_ROLE): void&lt;br/&gt;+ getEmail(): String&lt;br/&gt;+ getUserRole(): USER_ROLE&lt;br/&gt;+ setShoppingCart(ShoppingCart): void&lt;br/&gt;+ getPassword(): String&lt;br/&gt;+ isAccountNonLocked(): boolean&lt;br/&gt;+ removePurchaseReceipt(PurchaseReceipt): boolean&lt;br/&gt;+ isEnabled(): boolean&lt;br/&gt;+ setPassword(String): void&lt;br/&gt;+ setPurchaseReceipts(List&amp;lt;PurchaseReceipt&amp;gt;): void&lt;br/&gt;+ getId(): long&lt;br/&gt;+ equals(Object): boolean&lt;br/&gt;+ getAuthorities(): Collection&amp;lt;GrantedAuthority&amp;gt;&lt;br/&gt;+ setUsername(String): void&lt;br/&gt;+ setEmail(String): void&lt;br/&gt;+ getShoppingCart(): ShoppingCart&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1503" y="-396" width="368" height="785" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.581;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=open;startFill=0;strokeWidth=4;startSize=14;endArrow=diamondThin;endFill=1;endSize=14;" edge="1" parent="1" source="node5" target="node1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-3" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="320" y="-160" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-5" value="0...*" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="412" y="-160" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.005;entryY=0.45;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=open;startFill=0;strokeWidth=4;startSize=14;endArrow=diamondThin;endFill=1;endSize=14;" edge="1" parent="1" source="node5" target="node0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-7" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="324" y="389" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-8" value="0...*" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="412" y="389" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=-0.006;entryY=0.295;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=diamondThin;endFill=1;endSize=14;startArrow=diamondThin;startFill=0;strokeWidth=4;startSize=14;" edge="1" parent="1" source="node1" target="node6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-10" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="929" y="-310" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-11" value="0...*" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="780" y="-310" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.008;entryY=0.318;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=diamondThin;endFill=1;endSize=14;startArrow=diamondThin;startFill=0;strokeWidth=4;startSize=14;" edge="1" parent="1" source="node0" target="node3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="870" y="30" as="sourcePoint" />
+            <mxPoint x="1064" y="30" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-16" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="929" y="290" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-17" value="0...*" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="870" y="290" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.007;entryY=0.129;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=4;endArrow=diamondThin;endFill=1;endSize=14;" edge="1" parent="1" source="node6" target="node2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1507" y="-296" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-21" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="1352" y="-330" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-22" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="-330" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=-0.011;entryY=0.877;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=4;endSize=14;endArrow=diamondThin;endFill=0;" edge="1" parent="1" source="node3" target="node2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-24" value="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="260" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DK7NWVicS65q2r6UFn-F-25" value="0...*" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="1392" y="260" width="40" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
