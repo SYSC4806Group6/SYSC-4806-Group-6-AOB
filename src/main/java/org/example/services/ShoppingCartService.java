@@ -30,9 +30,7 @@ public class ShoppingCartService {
         if (existingItem != null) {
             existingItem.setQuantity(existingItem.getQuantity() + 1);
         } else {
-            ShoppingCartItem newItem = new ShoppingCartItem(book, 1);
-            newItem.setShoppingCart(cart);
-            cart.addShoppingCartItem(newItem);
+            cart.addShoppingCartItem(new ShoppingCartItem(cart, book));
         }
     }
 

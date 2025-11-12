@@ -77,6 +77,14 @@ public class ShoppingCart {
         return totalCartCost;
     }
 
+    public int getTotalNumBooks() {
+        int totalNumBooks = 0;
+        for (ShoppingCartItem item : this.items) {
+            totalNumBooks += item.getQuantity();
+        }
+        return totalNumBooks;
+    }
+
     /* Getters and Setters */
     public long getId() {
         return this.id;
