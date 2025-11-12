@@ -21,48 +21,24 @@ public class ShoppingCartService {
         this.bookRepo = bookRepo;
     }
 
-    public ShoppingCart getOrCreateCart(User user) {
-        return cartRepo.findByUser(user).orElseGet(() -> {
-            ShoppingCart newCart = new ShoppingCart(user);
-            return cartRepo.save(newCart);
-        });
-    }
-
-    public void addBookToCart(User user, String isbn) {
-        ShoppingCart cart = getOrCreateCart(user);
-        Book book = bookRepo.findByIsbn(isbn);
-        if (book == null) return;
-
-        ShoppingCartItem newItem = new ShoppingCartItem(cart, book);
-
-        if (!cart.addShoppingCartItem(newItem)) {
-            // Book already existed, quantity incremented inside addShoppingCartItem
-        } else {
-            newItem.setShoppingCart(cart);
-            itemRepo.save(newItem);
-        }
-        cartRepo.save(cart);
-    }
-
-    public void updateQuantity(User user, String isbn, int quantity) {
-        ShoppingCart cart = getOrCreateCart(user);
-        cart.getItems().stream()
-                .filter(i -> i.getBook().getIsbn().equals(isbn))
+    public void addBookToCart(ShoppingCart cart, Book book) {
+        ShoppingCartItem existingItem = cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(book.getIsbn()))
                 .findFirst()
-                .ifPresent(i -> {
-                    i.setQuantity(quantity);
-                    itemRepo.save(i);
-                });
+                .orElse(null);
+
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+        } else {
+            ShoppingCartItem newItem = new ShoppingCartItem(book, 1);
+            newItem.setShoppingCart(cart);
+            cart.addShoppingCartItem(newItem);
+        }
     }
 
-    public void removeBook(User user, String isbn) {
-        ShoppingCart cart = getOrCreateCart(user);
-        cart.getItems().removeIf(i -> i.getBook().getIsbn().equals(isbn));
-        cartRepo.save(cart);
-    }
-
-    public double getTotal(User user) {
-        ShoppingCart cart = getOrCreateCart(user);
-        return cart.getAndCalculateTotalCartPrice();
+    public int getTotalItemCount(ShoppingCart cart) {
+        return cart.getItems().stream()
+                .mapToInt(ShoppingCartItem::getQuantity)
+                .sum();
     }
 }
