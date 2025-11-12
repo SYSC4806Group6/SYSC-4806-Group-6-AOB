@@ -35,11 +35,27 @@ public class ShoppingCartController {
 
         Book book = bookCatalogService.getBookOrThrow(isbn);
 
-        ShoppingCartItem item = new ShoppingCartItem(book, 1);
-        item.setShoppingCart(cart);
-        cart.addShoppingCartItem(item);
+        // Check if the book already exists in the cart
+        ShoppingCartItem existingItem = null;
+        for (ShoppingCartItem i : cart.getItems()) {
+            if (i.getBook().getIsbn().equals(isbn)) {
+                existingItem = i;
+                break;
+            }
+        }
 
-        return Map.of("itemCount", cart.getItems().size());
+        // If book exists increase quantity
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+        } else {
+            ShoppingCartItem item = new ShoppingCartItem(book, 1);
+            item.setShoppingCart(cart);
+            cart.addShoppingCartItem(item);
+        }
+
+        // Reflect total books in UI
+        int totalItems = cart.getItems().stream().mapToInt(ShoppingCartItem::getQuantity).sum();
+        return Map.of("itemCount", totalItems);
     }
 
     @GetMapping

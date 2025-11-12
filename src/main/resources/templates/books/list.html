@@ -2,6 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+
+    // adding CSRF meta tags so the token is available to JavaScript
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title>AmazinBookStore | Catalog</title>
     <style>
         body {
@@ -321,14 +326,14 @@
                 e.preventDefault();
                 const isbn = this.getAttribute("data-isbn");
 
-                // Get the CSRF token if it exists (for logged-in users)
-                const token = document.querySelector('meta[name="_csrf"]');
+                // Get CSRF header name and token from meta tags
+                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
                 const headers = {
                     'Content-Type': 'application/json'
                 };
-                if (token) {
-                    headers[token.getAttribute('name')] = token.getAttribute('content');
-                }
+                headers[header] = token; // Add the CSRF header correctly
 
                 fetch(`/cart/add/${isbn}`, {
                     method: "POST",
