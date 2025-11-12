@@ -8,6 +8,7 @@ import org.example.entities.User;
 import org.example.services.BookCatalogService;
 import org.example.services.BookService;
 import org.example.services.ShoppingCartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class ShoppingCartController {
         this.bookCatalogService = bookCatalogService;
     }
 
+    @Autowired
+    private ShoppingCartService ShoppingCartService;
+
     @PostMapping("/add/{isbn}")
     @ResponseBody
     public Map<String, Object> addToCart(@PathVariable String isbn, HttpSession session) {
@@ -34,41 +38,9 @@ public class ShoppingCartController {
         }
 
         Book book = bookCatalogService.getBookOrThrow(isbn);
+        ShoppingCartService.addBookToCart(cart, book);
 
-        // Check if the book already exists in the cart
-        ShoppingCartItem existingItem = null;
-        for (ShoppingCartItem i : cart.getItems()) {
-            if (i.getBook().getIsbn().equals(isbn)) {
-                existingItem = i;
-                break;
-            }
-        }
-
-        // If book exists increase quantity
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-        } else {
-            ShoppingCartItem item = new ShoppingCartItem(book, 1);
-            item.setShoppingCart(cart);
-            cart.addShoppingCartItem(item);
-        }
-
-        // Reflect total books in UI
-        int totalItems = cart.getItems().stream().mapToInt(ShoppingCartItem::getQuantity).sum();
-        return Map.of("itemCount", totalItems);
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        return Map.of("itemCount", itemCount);
     }
-
-    @GetMapping
-    public String showCart() {
-        return "cart/cart";
-    }
-
-    /* To view cart (coming soon)
-    @GetMapping
-    public String viewCart(@SessionAttribute("loggedInUser") User user, Model model) {
-        model.addAttribute("cart", cartService.getOrCreateCart(user));
-        model.addAttribute("totalPrice", cartService.getTotal(user));
-        return "cart/view";
-    }
-     */
 }
