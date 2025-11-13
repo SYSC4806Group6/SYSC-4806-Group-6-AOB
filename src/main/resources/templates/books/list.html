@@ -16,22 +16,32 @@
             background-color: #f5f5f5;
         }
         header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            position: relative;
+            padding: 2rem 2rem 1rem;
             margin-bottom: 1.5rem;
-            gap: 1.5rem; /* Added gap for better spacing */
         }
-        .header-left {
+        .site-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin: 0;
+            color: #1f2937;
+        }
+        .site-title span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b7280;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.35rem;
+        }
+        .header-controls {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .auth-controls {
             display: flex;
@@ -53,14 +63,181 @@
             font-family: Arial, sans-serif;
             font-size: 1em;
         }
-        .search-form, .filters {
+        .search-form {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
         }
+        .search-form {
+            background: #fff;
+            border-radius: 999px;
+            padding: 0.35rem 0.75rem;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+        }
         .search-form input[type="text"] {
-            min-width: 260px;
-            padding: 0.5rem;
+            min-width: 220px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+        .search-button {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .search-button svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+        .search-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+        }
+        .cart-button {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+            text-decoration: none;
+            color: #111827;
+        }
+        .cart-button svg {
+            width: 22px;
+            height: 22px;
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -2px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 999px;
+            padding: 0 0.4rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 22px;
+            text-align: center;
+        }
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .filters-panel {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+            position: sticky;
+            top: 1rem;
+        }
+        .filter-group {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+        .filter-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111827;
+            padding: 1rem 0;
+            cursor: pointer;
+        }
+        .filter-toggle .chevron {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .filter-group.open .filter-toggle .chevron {
+            transform: rotate(180deg);
+        }
+        .filter-body {
+            max-height: 0;
+            overflow: hidden;
+            padding-bottom: 0;
+            transition: max-height 0.25s ease, padding-bottom 0.25s ease;
+        }
+        .filter-group.open .filter-body {
+            padding-bottom: 1rem;
+        }
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+        .filter-option input {
+            display: none;
+        }
+        .checkbox-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1.5px solid #cbd5f5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .checkbox-box::after {
+            content: "✔";
+            font-size: 0.8rem;
+            color: transparent;
+            transition: color 0.2s ease;
+        }
+        .filter-option:hover .checkbox-box::after {
+            color: #94a3b8;
+        }
+        .filter-option input:checked + .checkbox-box {
+            background: #111827;
+            border-color: #111827;
+        }
+        .filter-option input:checked + .checkbox-box::after {
+            color: #fff;
+        }
+        .filter-actions {
+            margin-top: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .filter-actions button {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            border: none;
+            background: #111827;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .cart-btn {
@@ -103,6 +280,18 @@
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px rgba(15, 23, 42, 0.15);
+        }
+        .book-card:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 3px;
             border: 2px solid #ddd;
         }
         .list-layout .book-card {
@@ -123,6 +312,48 @@
             border-radius: 4px;
             background: #ececec;
         }
+        .book-extra {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.2s ease, max-height 0.2s ease;
+        }
+        .book-card:hover .book-extra {
+            opacity: 1;
+            max-height: 200px;
+        }
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            gap: 1rem;
+        }
+        .price-pill {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #111827;
+        }
+        .add-to-cart-form {
+            margin: 0;
+        }
+        .add-to-cart-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.35);
         .book-card .book-info {
             display: flex;
             flex-direction: column;
@@ -154,33 +385,65 @@
             color: #fff;
             border-color: #333;
         }
+        @media (max-width: 1000px) {
+            .catalog-layout {
+                grid-template-columns: 1fr;
+            }
+            .filters-panel {
+                position: static;
+                width: 100%;
+            }
+        }
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
             }
             header {
-                gap: 1rem;
+                padding: 1.5rem 1rem 1rem;
             }
-            .search-form, .filters {
-                flex-direction: column;
-                align-items: stretch;
+            .header-controls {
+                position: static;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-top: 1rem;
+            }
+            .search-form {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .search-form input[type="text"] {
+                min-width: 0;
+                flex: 1;
             }
         }
     </style>
 </head>
 <body>
 <header>
-    <div class="header-left">
-        <h1>Amazin Book Catalog</h1>
+    <h1 class="site-title">
+        Amazin Book Catalog
+        <span>by Group 6</span>
+    </h1>
+    <div class="header-controls">
         <form class="search-form" th:action="@{/books}" method="get">
             <input type="text"
                    name="searchTerm"
                    placeholder="Search by title, author, or publisher"
                    th:value="${criteria.searchTerm}">
-            <button type="submit">Search</button>
+            <button type="submit" class="search-button" aria-label="Search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15.5 14h-.79l-.28-.27a6 6 0 1 0-.91.91l.27.28v.79l4.25 4.24 1.49-1.49L15.5 14zm-6 0a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                </svg>
+            </button>
         </form>
-    </div>
 
+        <a class="cart-button" th:href="@{/cart}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 4h-2l-1 2H2v2h1l3.6 7.59L5 18a2 2 0 1 0 2 2h10v-2H7.42l.93-2h7.45a2 2 0 0 0 1.87-1.31L21 6H6.42l-.94-2zM7 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1.1-6h-8.45l-2.1-4.5h12.3L18.1 14z"/>
+            </svg>
+            <span class="cart-count" id="cart-count" th:text="${cartSize}">0</span>
+        </a>
     <div class="header-right">
         <div class="header-receipts">
             <a th:href="@{/purchaseReceipts}">Receipts</a>
@@ -210,6 +473,12 @@
         </div>
     </div>
 </header>
+
+<div class="catalog-layout">
+    <aside class="filters-panel">
+        <form th:action="@{/books}" method="get">
+            <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
+            <input type="hidden" name="size" th:value="${page.size}">
   
 <section class="filters">
     <form th:action="@{/books}" method="get">
@@ -261,8 +530,102 @@
     </form>
 </section>
 
-<div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
+            <div class="filter-group open" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Publisher
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="radio" name="publisher" value=""
+                                   th:checked="${!criteria.hasPublisher()}">
+                            <span class="checkbox-box"></span>
+                            <span>All Publishers</span>
+                        </label>
+                        <label class="filter-option"
+                               th:each="publisher : ${publishers}">
+                            <input type="radio" name="publisher"
+                                   th:value="${publisher}"
+                                   th:checked="${criteria.publisher != null ? #strings.equalsIgnoreCase(publisher, criteria.publisher) : false}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${publisher}">Publisher</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Tag
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="radio" name="tag" value=""
+                                   th:checked="${!criteria.hasTag()}">
+                            <span class="checkbox-box"></span>
+                            <span>All Tags</span>
+                        </label>
+                        <label class="filter-option"
+                               th:each="tagItem : ${tags}">
+                            <input type="radio" name="tag"
+                                   th:value="${tagItem}"
+                                   th:checked="${criteria.tag != null ? #strings.equalsIgnoreCase(tagItem, criteria.tag) : false}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${tagItem}">Tag</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Sort by
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option"
+                               th:each="sortOption : ${sortOptions}">
+                            <input type="radio" name="sortBy"
+                                   th:value="${sortOption}"
+                                   th:checked="${criteria.sortBy != null ? sortOption.equalsIgnoreCase(criteria.sortBy) : sortOption == 'title'}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${#strings.capitalize(sortOption)}">Sort</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group" data-filter-group>
+                <button type="button" class="filter-toggle">
+                    Direction
+                    <span class="chevron">⌄</span>
+                </button>
+                <div class="filter-body">
+                    <div class="filter-options">
+                        <label class="filter-option"
+                               th:each="direction : ${directions}">
+                            <input type="radio" name="sortDirection"
+                                   th:value="${direction.name()}"
+                                   th:checked="${criteria.sortDirection != null ? direction == criteria.sortDirection : direction.name() == 'ASC'}">
+                            <span class="checkbox-box"></span>
+                            <span th:text="${direction.name()}">Direction</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Apply Filters</button>
+            </div>
+        </form>
+    </aside>
+
+    <div class="catalog-content">
+        <div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
 <section th:if="${!#lists.isEmpty(books)}"
          th:classappend="${newCatalogLayout} ? ' list-layout' : ' grid-layout'">
     <article class="book-card" th:each="book : ${books}">
@@ -287,45 +650,146 @@
     </article>
 </section>
 
-<nav class="pagination" th:if="${page.totalPages > 1}">
-    <span th:if="${page.isFirst()}">First</span>
-    <a th:if="${!page.isFirst()}"
-       th:href="@{/books(page=0, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        First
-    </a>
-    <span th:if="${!page.hasPrevious()}">Prev</span>
-    <a th:if="${page.hasPrevious()}"
-       th:href="@{/books(page=${page.number - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Prev
-    </a>
-    <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-          th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
-        <span th:if="${i == page.number}"
-              th:text="${i + 1}"
-              class="active"></span>
-        <a th:if="${i != page.number}"
-           th:text="${i + 1}"
-           th:href="@{/books(page=${i}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}"></a>
-    </span>
-    <span th:if="${!page.hasNext()}">Next</span>
-    <a th:if="${page.hasNext()}"
-       th:href="@{/books(page=${page.number + 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Next
-    </a>
-    <span th:if="${page.isLast()}">Last</span>
-    <a th:if="${!page.isLast()}"
-       th:href="@{/books(page=${page.totalPages - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
-        Last
-    </a>
-</nav>
+        <section th:if="${#lists.isEmpty(books)}">
+            <p>No books found. Try adjusting your search or filters.</p>
+        </section>
 
+        <section class="book-grid" th:if="${!#lists.isEmpty(books)}">
+            <article class="book-card"
+                     th:each="book : ${books}"
+               th:attr="data-href=@{/books/{isbn}(isbn=${book.isbn})}"
+                     role="link"
+                     tabindex="0">
+                <div>
+                    <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
+                    <div th:if="${book.pictureUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
+                        <span>No image</span>
+                    </div>
+                </div>
+                <h2 th:text="${book.title}">Book Title</h2>
+                <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
+                <div class="book-extra">
+                    <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
+                    <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
+                    <p th:if="${!#lists.isEmpty(book.tags)}">
+                        <strong>Tags:</strong>
+                        <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
+                    </p>
+                </div>
+                <div class="card-actions">
+                    <span class="price-pill"
+                          th:text="${'$' + #numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">
+                        $0.00
+                    </span>
+                    <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
+                        <button type="submit" class="add-to-cart-btn" onclick="event.stopPropagation();">
+                            <span>Add to Cart</span>
+                        </button>
+                    </form>
+                </div>
+            </article>
+        </section>
+
+        <nav class="pagination" th:if="${page.totalPages > 1}">
+            <span th:if="${page.isFirst()}">First</span>
+            <a th:if="${!page.isFirst()}"
+               th:href="@{/books(page=0, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                First
+            </a>
+            <span th:if="${!page.hasPrevious()}">Prev</span>
+            <a th:if="${page.hasPrevious()}"
+               th:href="@{/books(page=${page.number - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Prev
+            </a>
+            <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                  th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
+                <span th:if="${i == page.number}"
+                      th:text="${i + 1}"
+                      class="active"></span>
+                <a th:if="${i != page.number}"
+                   th:text="${i + 1}"
+                   th:href="@{/books(page=${i}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}"></a>
+            </span>
+            <span th:if="${!page.hasNext()}">Next</span>
+            <a th:if="${page.hasNext()}"
+               th:href="@{/books(page=${page.number + 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Next
+            </a>
+            <span th:if="${page.isLast()}">Last</span>
+            <a th:if="${!page.isLast()}"
+               th:href="@{/books(page=${page.totalPages - 1}, size=${page.size}, searchTerm=${criteria.searchTerm}, publisher=${criteria.publisher}, tag=${criteria.tag}, sortBy=${criteria.sortBy}, sortDirection=${criteria.sortDirection != null ? criteria.sortDirection.name() : 'ASC'})}">
+                Last
+            </a>
+        </nav>
+    </div>
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const filterGroups = document.querySelectorAll("[data-filter-group]");
+        filterGroups.forEach(group => {
+            const toggle = group.querySelector(".filter-toggle");
+            const body = group.querySelector(".filter-body");
+
+            const updateState = () => {
+                const isOpen = group.classList.contains("open");
+                toggle.setAttribute("aria-expanded", isOpen);
+                if (isOpen) {
+                    body.style.maxHeight = body.scrollHeight + "px";
+                } else {
+                    body.style.maxHeight = null;
+                }
+            };
+
+            updateState();
+
+            toggle.addEventListener("click", () => {
+                group.classList.toggle("open");
+                updateState();
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            document.querySelectorAll("[data-filter-group].open .filter-body")
+                .forEach(body => body.style.maxHeight = body.scrollHeight + "px");
+        });
+
+        document.querySelectorAll(".book-card").forEach(card => {
+            const navigate = () => {
+                const href = card.getAttribute("data-href");
+                if (href) {
+                    window.location.href = href;
+                }
+            };
+            card.addEventListener("click", event => {
+                if (event.target.closest("form")) {
+                    return;
+                }
+                navigate();
+            });
+            card.addEventListener("keypress", event => {
+                if ((event.key === "Enter" || event.key === " ") && !event.target.closest("form")) {
+                    event.preventDefault();
+                    navigate();
+                }
+            });
+        });
+
+        const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
+        const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+
         document.querySelectorAll(".add-to-cart-form").forEach(form => {
+            form.addEventListener("click", event => event.stopPropagation());
+
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const isbn = this.getAttribute("data-isbn");
 
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                if (csrfTokenMeta && csrfHeaderMeta) {
+                    headers[csrfHeaderMeta.getAttribute('content')] = csrfTokenMeta.getAttribute('content');
+                }
                 // Get CSRF header name and token from meta tags
                 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
                 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
@@ -341,7 +805,6 @@
                 })
                     .then(response => {
                         if (response.status === 403) {
-                            // Redirect to login if not authenticated
                             window.location.href = '/login';
                         }
                         return response.json();
