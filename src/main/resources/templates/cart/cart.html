@@ -154,7 +154,7 @@
     <a th:href="@{/books}" class="cart-btn">← Continue Shopping</a>
 </header>
 
-<div th:if="${#lists.isEmpty(cartItems)}" class="alert">
+<div class="alert empty-message" th:if="${#lists.isEmpty(cartItems)}">
     Your cart is empty.
 </div>
 
@@ -179,14 +179,13 @@
                     <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="qty-input">
                 </form>
             </div>
-
-            <button type="button"
-                    class="remove-btn"
-                    th:attr="data-isbn=${item.book.isbn}"
-                    style="background:none;border:none;color:red;cursor:pointer;margin-top:0.5rem;">
-                Remove
-            </button>
         </div>
+
+        <button type="button"
+                class="remove-btn"
+                th:attr="data-isbn=${item.book.isbn}">
+            Remove
+        </button>
     </article>
 </section>
 
@@ -245,6 +244,24 @@
                                 totalElement.textContent = totalData.total.toFixed(2);
                             }
                         });
+
+                    if (data.itemCount === 0) {
+
+                        document.querySelector(".book-grid")?.remove();
+                        document.querySelector(".cart-total")?.remove();
+                        document.querySelector(".actions")?.remove();
+
+                        let emptyMsg = document.querySelector(".empty-message");
+                        if (!emptyMsg) {
+                            emptyMsg = document.createElement("div");
+                            emptyMsg.classList.add("alert", "empty-message");
+                            emptyMsg.textContent = "Your cart is empty.";
+                            const header = document.querySelector("header");
+                            header.insertAdjacentElement("afterend", emptyMsg);
+                        } else {
+                            emptyMsg.style.display = "block";
+                        }
+                    }
 
                 })
                 .catch(error => console.error("Error removing item:", error));
