@@ -1,10 +1,11 @@
 package org.example.repositories;
 
 import org.example.entities.ShoppingCart;
+import org.example.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
+
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
-    ShoppingCart findById(long id);
+    Optional<ShoppingCart> findByUser(User user);
 }

@@ -12,6 +12,7 @@ import org.example.entities.Book;
 import org.example.services.BookCatalogService;
 import org.example.services.BookNotFoundException;
 import org.example.services.BookSearchCriteria;
+import org.ff4j.FF4j;
 import org.example.services.CustomUserDetailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ class BookControllerTest {
 
     @MockBean
     private BookCatalogService catalogService;
+
+    @MockBean
+    private FF4j ff4j;
 
     @MockBean
     private CustomUserDetailService customUserDetailService;
