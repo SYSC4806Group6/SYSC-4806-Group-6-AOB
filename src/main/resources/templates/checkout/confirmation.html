@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation | AmazinBookStore</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+        .confirmation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .info-box p {
+            margin: 0.25rem 0;
+            color: #333;
+        }
+
+        .order-summary {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fafafa;
+            padding: 1rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0.5rem 0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-item-details {
+            text-align: right;
+            color: #555;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            color: #000;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.6rem 1.2rem;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .continue-btn:hover {
+            background-color: #000;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="confirmation-container">
+    <header>
+        <h1 th:text="${message}">Thank you for your order!</h1>
+        <p>Your order has been successfully placed. A confirmation email will be sent to <span th:text="${email}">your email</span>.</p>
+    </header>
+
+    <div class="section">
+        <h2>Contact Information</h2>
+        <div class="info-box">
+            <p><strong>Name:</strong> <span th:text="${customerName}">John Doe</span></p>
+            <p><strong>Email:</strong> <span th:text="${email}">john@example.com</span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Shipping Address</h2>
+        <div class="info-box">
+            <p th:text="${address}">123 Main St, Ottawa, ON, K1A 0B1, Canada</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Your Order</h2>
+        <div class="order-summary">
+            <div th:each="item : ${receipt.items}" class="order-item">
+                <div class="order-item-title" th:text="${item.book.title}">Book Title</div>
+                <div class="order-item-details">
+                    Qty: <span th:text="${item.quantity}">1</span><br>
+                    $<span th:text="${#numbers.formatDecimal(item.pricePerBook, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                </div>
+            </div>
+            <div class="total">
+                Total: $<span th:text="${#numbers.formatDecimal(receipt.totalCost, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a th:href="@{/books}" class="continue-btn">Continue Shopping</a>
+    </div>
+</div>
+</body>
+</html>
