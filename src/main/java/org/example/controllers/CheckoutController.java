@@ -3,6 +3,7 @@ package org.example.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.entities.PurchaseReceipt;
 import org.example.entities.ShoppingCart;
+import org.example.repositories.PurchaseReceiptRepository;
 import org.example.services.PurchaseReceiptService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -48,15 +49,11 @@ public class CheckoutController {
             return "redirect:/cart/cart";
         }
 
-        PurchaseReceipt receipt = purchaseReceiptService.buildReceiptFromCart(cart);
-        receipt.setUser(user);
-        receipt.setShippingName(name);
-        receipt.setShippingAddress(address + ", " + city + ", " + state + " " + zip + ", " + country);
-        receipt.setEmail(email);
-        receipt.calculateAndSetTotalCost();
+        String fullAddress = address + ", " + city + ", " + state + " " + zip + ", " + country;
 
+        PurchaseReceipt saved = purchaseReceiptService.buildAndSaveReceiptFromCart(cart, user, name, fullAddress, email);
 
-        model.addAttribute("receipt", receipt);
+        model.addAttribute("receipt", saved);
         model.addAttribute("customerName", name);
         model.addAttribute("email", email);
         model.addAttribute("address", address + ", " + city + ", " + state + " " + zip + ", " + country);

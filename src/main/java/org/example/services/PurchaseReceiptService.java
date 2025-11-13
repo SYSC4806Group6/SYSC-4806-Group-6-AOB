@@ -64,6 +64,21 @@ public class PurchaseReceiptService {
         return receipt;
     }
 
+    @Transactional
+    public PurchaseReceipt buildAndSaveReceiptFromCart(ShoppingCart cart, User user,
+                                                       String shippingName, String shippingAddress, String email) {
+
+        PurchaseReceipt receipt = buildReceiptFromCart(cart);
+        receipt.setUser(user);
+        receipt.setShippingName(shippingName);
+        receipt.setShippingAddress(shippingAddress);
+        receipt.setEmail(email);
+        receipt.calculateAndSetTotalCost();
+
+        return purchaseReceiptRepository.save(receipt);
+    }
+
+
     // METHODS FOR VIEWING RECEIPTS
     @Transactional(readOnly = true)
     public List<PurchaseReceipt> getReceiptsForUser(User user) {
