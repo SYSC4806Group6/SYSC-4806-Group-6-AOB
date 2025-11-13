@@ -51,6 +51,22 @@ public class ShoppingCartService {
         }
     }
 
+    public void updateBookQuantity(ShoppingCart cart, String isbn, int newQuantity) {
+        ShoppingCartItem item = cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
+
+        if (item != null) {
+            if (newQuantity > 0) {
+                item.setQuantity(newQuantity);
+            } else {
+                cart.removeShoppingCartItem(item);
+            }
+        }
+
+    }
+
     public int getTotalItemCount(ShoppingCart cart) {
         return cart.getItems().stream()
                 .mapToInt(ShoppingCartItem::getQuantity)

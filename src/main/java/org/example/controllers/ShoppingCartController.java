@@ -79,6 +79,25 @@ public class ShoppingCartController {
         return Map.of("itemCount", itemCount);
     }
 
+    @PostMapping("/update/{isbn}")
+    @ResponseBody
+    public Map<String, Object> updateCart(@PathVariable String isbn, @RequestParam int quantity, HttpSession session) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+        }
+
+        ShoppingCartService.updateBookQuantity(cart, isbn, quantity);
+
+        session.setAttribute("cart", cart);
+
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        double total = cart.getAndCalculateTotalCartPrice();
+
+        return Map.of("itemCount", itemCount);
+
+    }
+
     @GetMapping("/total")
     @ResponseBody
     public Map<String, Object> getCartTotal(HttpSession session) {

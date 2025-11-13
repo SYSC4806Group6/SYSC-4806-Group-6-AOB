@@ -173,10 +173,10 @@
 
             <div class="quantity">
                 <label>Qty:</label>
-                <form th:action="@{/cart/update}" method="post" style="display:flex;align-items:center;gap:0.5rem;">
+                <form th:action="@{/cart/update}" method="post"
+                      style="display:flex;align-items:center;gap:0.5rem;">
                     <input type="hidden" name="isbn" th:value="${item.book.isbn}">
-                    <input type="number" name="quantity" min="1" th:value="${item.quantity}">
-                    <button type="submit">Update</button>
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="qty-input">
                 </form>
             </div>
 
@@ -248,6 +248,40 @@
 
                 })
                 .catch(error => console.error("Error removing item:", error));
+            });
+        });
+
+        const qtyInputs = document.querySelectorAll('.qty-input');
+
+        qtyInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const newQty = parseInt(this.value);
+                const isbn = this.closest("form").querySelector('input[name="isbn"]').value
+
+                if (isNaN(newQty) || newQty < 1) {
+                    this.value = 1;
+                    return;
+                }
+
+                fetch(`/cart/update/${isbn}?quantity=${newQty}`, {
+                    method: "POST",
+                    headers: { [header]: token }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const cartCount = document.getElementById("cart-count");
+                        if (cartCount) cartCount.textContent = data.itemCount;
+
+                        fetch("/cart/total")
+                            .then(response => response.json())
+                            .then(totalData => {
+                                const totalElement = document.querySelector(".cart-total span");
+                                if (totalElement) {
+                                    totalElement.textContent = totalData.total.toFixed(2);
+                                }
+                            });
+                    })
+                .catch(error => console.error("Error updating quantity:", error));
             });
         });
 
