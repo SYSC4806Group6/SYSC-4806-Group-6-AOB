@@ -19,6 +19,10 @@ public class PurchaseReceipt {
     private double totalCost;
     private LocalDateTime orderDateTime;
 
+    private String shippingName;
+    private String shippingAddress;
+    private String email;
+
     /**
      * Default constructor
      */
@@ -98,6 +102,12 @@ public class PurchaseReceipt {
     public void setOrderDateTime(LocalDateTime orderDateTime) {
         this.orderDateTime = orderDateTime;
     }
+    public String getShippingName() {return this.shippingName;}
+    public void setShippingName(String shippingName) {this.shippingName = shippingName;}
+    public String getShippingAddress() {return this.shippingAddress;}
+    public void setShippingAddress(String shippingAddress) {this.shippingAddress = shippingAddress;}
+    public String getEmail() {return this.email;}
+    public void setEmail(String email) {this.email = email;}
 
     /**
      * Consider equal if all attributes equal

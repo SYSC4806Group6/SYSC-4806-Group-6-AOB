@@ -50,7 +50,11 @@ public class CheckoutController {
 
         PurchaseReceipt receipt = purchaseReceiptService.buildReceiptFromCart(cart);
         receipt.setUser(user);
+        receipt.setShippingName(name);
+        receipt.setShippingAddress(address + ", " + city + ", " + state + " " + zip + ", " + country);
+        receipt.setEmail(email);
         receipt.calculateAndSetTotalCost();
+
 
         model.addAttribute("receipt", receipt);
         model.addAttribute("customerName", name);
