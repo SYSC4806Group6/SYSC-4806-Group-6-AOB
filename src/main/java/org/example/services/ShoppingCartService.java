@@ -22,6 +22,7 @@ public class ShoppingCartService {
     }
 
     public void addBookToCart(ShoppingCart cart, Book book) {
+
         ShoppingCartItem existingItem = cart.getItems().stream()
                 .filter(i -> i.getBook().getIsbn().equals(book.getIsbn()))
                 .findFirst()
@@ -31,6 +32,22 @@ public class ShoppingCartService {
             existingItem.setQuantity(existingItem.getQuantity() + 1);
         } else {
             cart.addShoppingCartItem(new ShoppingCartItem(cart, book));
+        }
+    }
+
+    public void removeBookFromCart(ShoppingCart cart, String isbn) {
+        ShoppingCartItem itemToRemove = cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
+
+        if (itemToRemove != null) {
+            int newQuantity = itemToRemove.getQuantity() - 1;
+            if (newQuantity > 0) {
+                itemToRemove.setQuantity(newQuantity);
+            } else {
+                cart.removeShoppingCartItem(itemToRemove);
+            }
         }
     }
 

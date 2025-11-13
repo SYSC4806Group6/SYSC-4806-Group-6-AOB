@@ -51,18 +51,11 @@ public class ShoppingCart {
     /**
      * removes a ShoppingCartItem from the ShoppingCart
      * If book already exists in the ShoppingCart, decrement the quantity
+     *
      * @param item The item to be removed
-     * @return True if removed/decremented, False otherwise
      */
-    public boolean removeShoppingCartItem(ShoppingCartItem item) {
-        if (items.contains(item)) {
-            int currentItemQuantity = items.get(items.indexOf(item)).getQuantity();
-            if (currentItemQuantity > 1) {
-                items.get(items.indexOf(item)).setQuantity(currentItemQuantity - 1);
-                return true;
-            }
-        }
-        return this.items.remove(item);
+    public void removeShoppingCartItem(ShoppingCartItem item) {
+        items.remove(item);
     }
 
     /**

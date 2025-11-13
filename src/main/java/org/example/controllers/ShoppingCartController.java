@@ -8,6 +8,8 @@ import org.example.entities.User;
 import org.example.services.BookCatalogService;
 import org.example.services.BookService;
 import org.example.services.ShoppingCartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import java.util.Map;
 @RequestMapping("/cart")
 public class ShoppingCartController {
 
+    private static final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
     private final BookCatalogService bookCatalogService;
 
     @Autowired
@@ -56,5 +59,31 @@ public class ShoppingCartController {
         model.addAttribute("totalPrice", cart.getAndCalculateTotalCartPrice());
 
         return "cart/cart";
+    }
+
+    @PostMapping("/remove/{isbn}")
+    @ResponseBody
+    public Map<String, Object> removeFromCart(@PathVariable String isbn, HttpSession session) {
+
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+
+        ShoppingCartService.removeBookFromCart(cart, isbn);
+
+        session.setAttribute("cart", cart);
+
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        return Map.of("itemCount", itemCount);
+    }
+
+    @GetMapping("/total")
+    @ResponseBody
+    public Map<String, Object> getCartTotal(HttpSession session) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        double total = (cart != null) ? cart.getAndCalculateTotalCartPrice() : 0.00;
+        return Map.of("total", total);
     }
 }
