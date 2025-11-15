@@ -22,6 +22,7 @@ public class ShoppingCartService {
     }
 
     public void addBookToCart(ShoppingCart cart, Book book) {
+
         ShoppingCartItem existingItem = cart.getItems().stream()
                 .filter(i -> i.getBook().getIsbn().equals(book.getIsbn()))
                 .findFirst()
@@ -30,10 +31,40 @@ public class ShoppingCartService {
         if (existingItem != null) {
             existingItem.setQuantity(existingItem.getQuantity() + 1);
         } else {
-            ShoppingCartItem newItem = new ShoppingCartItem(book, 1);
-            newItem.setShoppingCart(cart);
-            cart.addShoppingCartItem(newItem);
+            cart.addShoppingCartItem(new ShoppingCartItem(cart, book));
         }
+    }
+
+    public void removeBookFromCart(ShoppingCart cart, String isbn) {
+        ShoppingCartItem itemToRemove = cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
+
+        if (itemToRemove != null) {
+            int newQuantity = itemToRemove.getQuantity() - 1;
+            if (newQuantity > 0) {
+                itemToRemove.setQuantity(newQuantity);
+            } else {
+                cart.removeShoppingCartItem(itemToRemove);
+            }
+        }
+    }
+
+    public void updateBookQuantity(ShoppingCart cart, String isbn, int newQuantity) {
+        ShoppingCartItem item = cart.getItems().stream()
+                .filter(i -> i.getBook().getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
+
+        if (item != null) {
+            if (newQuantity > 0) {
+                item.setQuantity(newQuantity);
+            } else {
+                cart.removeShoppingCartItem(item);
+            }
+        }
+
     }
 
     public int getTotalItemCount(ShoppingCart cart) {
