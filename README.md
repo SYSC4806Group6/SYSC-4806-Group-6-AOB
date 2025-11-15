@@ -38,6 +38,12 @@ For Milestone 1 we committed to one complete customer journey:
 - Shipped a recommendation stub exposed at `/api/recommendations/{userId}` and surfaced on catalog/detail views.
 - Set up CI/CD to Azure App Service with health checks and demo content for rapid testing.
 
+## ⚡ Milestone 2 Summary
+- Introduced buyer authentication/registration plus revamped cart and checkout flows with persistent session storage.
+- Added purchase receipt tracking, viewable history pages, and feature toggles (FF4J) to gradually roll out UI experiments.
+- Refreshed the catalog UI (new header/search/cart badge, collapsible filters, modern book cards) and added cart page upgrades.
+- Documented the milestone, README updates, and prepared presentation assets to support the final demo.
+
 ## 📦 Technology Stack
 - **Backend:** Spring Boot, Spring Data JPA, Thymeleaf
 - **Database:** PostgreSQL (Azure) / H2 for local development
