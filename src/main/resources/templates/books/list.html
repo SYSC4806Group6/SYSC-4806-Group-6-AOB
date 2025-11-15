@@ -2,11 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-
-    // adding CSRF meta tags so the token is available to JavaScript
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
+    <!-- Expose CSRF token/header to client-side code -->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>AmazinBookStore | Catalog</title>
     <style>
         body {
@@ -42,13 +40,19 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .header-receipts a {
+            font-weight: 600;
+            color: #2563eb;
+            text-decoration: none;
         }
         .auth-controls {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-        /* Style for the logout form so it looks like a link */
         .auth-controls form {
             margin: 0;
             padding: 0;
@@ -56,7 +60,7 @@
         .auth-controls button {
             background: none;
             border: none;
-            color: #0000EE; /* Default link color */
+            color: #0000EE;
             text-decoration: underline;
             cursor: pointer;
             padding: 0;
@@ -67,8 +71,6 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-        }
-        .search-form {
             background: #fff;
             border-radius: 999px;
             padding: 0.35rem 0.75rem;
@@ -239,35 +241,12 @@
             font-weight: 600;
             cursor: pointer;
         }
-
-        .cart-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem 1rem;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f2f2f2;
-            color: #333;
-            text-decoration: none;
-            height: 100%;
-            transition: background-color 0.2s ease;
-        }
-
-        .cart-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        /* default grid layout */
-        .grid-layout {
+        .book-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 1.5rem;
         }
-
-        /* alternate list layout */
-        .list-layout {
+        .book-grid.list-layout {
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -285,6 +264,10 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
         }
+        .book-grid.list-layout .book-card {
+            flex-direction: row;
+            align-items: flex-start;
+        }
         .book-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 18px 30px rgba(15, 23, 42, 0.15);
@@ -292,25 +275,29 @@
         .book-card:focus-visible {
             outline: 2px solid #2563eb;
             outline-offset: 3px;
-            border: 2px solid #ddd;
         }
-        .list-layout .book-card {
-            flex-direction: row;
-            align-items: flex-start;
-            padding: 1rem 2rem 1rem 1rem;
-        }
-        .book-card:hover {
-            border-color: #aaa;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: 0.2s ease;
-        }
-
-        .book-card img {
-            width: 150px;
-            height: 200px;
+        .card-media img,
+        .card-media .no-image {
+            width: 100%;
+            height: 220px;
             object-fit: cover;
             border-radius: 4px;
             background: #ececec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .book-grid.list-layout .card-media {
+            flex: 0 0 150px;
+        }
+        .book-grid.list-layout .card-media img,
+        .book-grid.list-layout .card-media .no-image {
+            height: 200px;
+        }
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
         .book-extra {
             opacity: 0;
@@ -321,6 +308,10 @@
         .book-card:hover .book-extra {
             opacity: 1;
             max-height: 200px;
+        }
+        .book-grid.list-layout .book-extra {
+            opacity: 1;
+            max-height: none;
         }
         .card-actions {
             display: flex;
@@ -354,11 +345,6 @@
         .add-to-cart-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 15px 30px rgba(16, 185, 129, 0.35);
-        .book-card .book-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
         }
         .alert {
             margin-bottom: 1rem;
@@ -405,7 +391,6 @@
                 position: static;
                 width: 100%;
                 justify-content: center;
-                flex-wrap: wrap;
                 margin-top: 1rem;
             }
             .search-form {
@@ -444,16 +429,9 @@
             </svg>
             <span class="cart-count" id="cart-count" th:text="${cartSize}">0</span>
         </a>
-    <div class="header-right">
         <div class="header-receipts">
             <a th:href="@{/purchaseReceipts}">Receipts</a>
         </div>
-
-        <!-- Keep your nicer styled cart button -->
-        <a th:href="@{/cart}" class="cart-btn">
-            <span class="cart-icon">🛒</span>
-            <span id="cart-count" class="cart-count" th:text="${cartSize}">0</span>
-        </a>
 
         <div class="auth-controls">
             <div sec:authorize="!isAuthenticated()">
@@ -479,56 +457,6 @@
         <form th:action="@{/books}" method="get">
             <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
             <input type="hidden" name="size" th:value="${page.size}">
-  
-<section class="filters">
-    <form th:action="@{/books}" method="get">
-        <input type="hidden" name="searchTerm" th:value="${criteria.searchTerm}">
-        <label>
-            Publisher
-            <select name="publisher">
-                <option value="" th:selected="${!criteria.hasPublisher()}">All publishers</option>
-                <option th:each="publisher : ${publishers}"
-                        th:value="${publisher}"
-                        th:text="${publisher}"
-                        th:selected="${criteria.publisher != null ? #strings.equalsIgnoreCase(publisher, criteria.publisher) : false}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Tag
-            <select name="tag">
-                <option value="" th:selected="${!criteria.hasTag()}">All tags</option>
-                <option th:each="tagItem : ${tags}"
-                        th:value="${tagItem}"
-                        th:text="${tagItem}"
-                        th:selected="${criteria.tag != null ? #strings.equalsIgnoreCase(tagItem, criteria.tag) : false}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Sort by
-            <select name="sortBy">
-                <option th:each="sortOption : ${sortOptions}"
-                        th:value="${sortOption}"
-                        th:text="${#strings.capitalize(sortOption)}"
-                        th:selected="${criteria.sortBy != null ? sortOption.equalsIgnoreCase(criteria.sortBy) : sortOption == 'title'}">
-                </option>
-            </select>
-        </label>
-        <label>
-            Direction
-            <select name="sortDirection">
-                <option th:each="direction : ${directions}"
-                        th:value="${direction.name()}"
-                        th:text="${direction.name()}"
-                        th:selected="${criteria.sortDirection != null ? direction == criteria.sortDirection : direction.name() == 'ASC'}">
-                </option>
-            </select>
-        </label>
-        <button type="submit">Apply Filters</button>
-        <input type="hidden" name="size" th:value="${page.size}">
-    </form>
-</section>
 
             <div class="filter-group open" data-filter-group>
                 <button type="button" class="filter-toggle">
@@ -626,66 +554,51 @@
 
     <div class="catalog-content">
         <div th:if="${errorMessage}" class="alert" th:text="${errorMessage}"></div>
-<section th:if="${!#lists.isEmpty(books)}"
-         th:classappend="${newCatalogLayout} ? ' list-layout' : ' grid-layout'">
-    <article class="book-card" th:each="book : ${books}">
-        <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
-        <div th:if="${book.pictureUrl == null}" style="width:150px;height:200px;display:flex;align-items:center;justify-content:center;background:#ececec;border-radius:4px;">
-            <span>No image</span>
-        </div>
-
-        <div class="book-info">
-            <h2 th:text="${book.title}">Book Title</h2>
-            <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
-            <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
-            <p><strong>Price:</strong> <span th:text="${#numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">$0.00</span></p>
-            <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
-            <a th:href="@{/books/{isbn}(isbn=${book.isbn})}">View Details</a>
-            <div th:if="${showAddToCart}">
-                <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
-                    <button type="submit">Add to Cart</button>
-                </form>
-            </div>
-        </div>
-    </article>
-</section>
 
         <section th:if="${#lists.isEmpty(books)}">
             <p>No books found. Try adjusting your search or filters.</p>
         </section>
 
-        <section class="book-grid" th:if="${!#lists.isEmpty(books)}">
+        <section class="book-grid"
+                 th:if="${!#lists.isEmpty(books)}"
+                 th:classappend="${newCatalogLayout} ? ' list-layout' : ' grid-layout'">
             <article class="book-card"
                      th:each="book : ${books}"
-               th:attr="data-href=@{/books/{isbn}(isbn=${book.isbn})}"
+                     th:attr="data-href=@{/books/{isbn}(isbn=${book.isbn})}"
                      role="link"
                      tabindex="0">
-                <div>
+                <div class="card-media">
                     <img th:if="${book.pictureUrl != null}" th:src="${book.pictureUrl}" th:alt="${book.title}">
-                    <div th:if="${book.pictureUrl == null}" style="height: 220px; display:flex; align-items:center; justify-content:center; background:#ececec;">
+                    <div th:if="${book.pictureUrl == null}" class="no-image">
                         <span>No image</span>
                     </div>
                 </div>
-                <h2 th:text="${book.title}">Book Title</h2>
-                <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
-                <div class="book-extra">
-                    <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
-                    <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
-                    <p th:if="${!#lists.isEmpty(book.tags)}">
-                        <strong>Tags:</strong>
-                        <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
-                    </p>
-                </div>
-                <div class="card-actions">
-                    <span class="price-pill"
-                          th:text="${'$' + #numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">
-                        $0.00
-                    </span>
-                    <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
-                        <button type="submit" class="add-to-cart-btn" onclick="event.stopPropagation();">
-                            <span>Add to Cart</span>
-                        </button>
-                    </form>
+                <div class="book-info">
+                    <h2 th:text="${book.title}">Book Title</h2>
+                    <p><strong>Author:</strong> <span th:text="${book.author}">Author Name</span></p>
+
+                    <div class="book-extra">
+                        <p><strong>Publisher:</strong> <span th:text="${book.publisher}">Publisher</span></p>
+                        <p th:if="${book.description}" th:text="${#strings.abbreviate(book.description, 120)}"></p>
+                        <p th:if="${!#lists.isEmpty(book.tags)}">
+                            <strong>Tags:</strong>
+                            <span th:each="tag : ${book.tags}" th:text="${tag}" style="margin-right:0.5rem;"></span>
+                        </p>
+                    </div>
+
+                    <div class="card-actions">
+                        <span class="price-pill"
+                              th:text="${'$' + #numbers.formatDecimal(book.price, 1, 'COMMA', 2, 'POINT')}">
+                            $0.00
+                        </span>
+                        <div th:if="${showAddToCart}">
+                            <form class="add-to-cart-form" th:attr="data-isbn=${book.isbn}">
+                                <button type="submit" class="add-to-cart-btn">
+                                    <span>Add to Cart</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </article>
         </section>
@@ -702,7 +615,7 @@
                 Prev
             </a>
             <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-                  th:if="${page.totalPages <= 7 or (i >= page.number - 2 and i <= page.number + 2)}">
+                  th:if="${page.totalPages <= 7 or (i >= page.number - 2 && i <= page.number + 2)}">
                 <span th:if="${i == page.number}"
                       th:text="${i + 1}"
                       class="active"></span>
@@ -723,6 +636,7 @@
         </nav>
     </div>
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const filterGroups = document.querySelectorAll("[data-filter-group]");
@@ -790,14 +704,6 @@
                 if (csrfTokenMeta && csrfHeaderMeta) {
                     headers[csrfHeaderMeta.getAttribute('content')] = csrfTokenMeta.getAttribute('content');
                 }
-                // Get CSRF header name and token from meta tags
-                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-                const headers = {
-                    'Content-Type': 'application/json'
-                };
-                headers[header] = token; // Add the CSRF header correctly
 
                 fetch(`/cart/add/${isbn}`, {
                     method: "POST",
