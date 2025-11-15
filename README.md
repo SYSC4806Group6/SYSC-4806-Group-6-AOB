@@ -40,7 +40,7 @@
 
 ## 
 
-## \## 🧑‍💻 Team Roles
+## \## 🧑‍💻 Team Roles (Milestone 1)
 
 ## 
 
@@ -48,15 +48,15 @@
 
 ## |--------|------|-----------------|
 
-## | Person A | DevOps \& Release | CI/CD, Azure deployment, branch protection, README |
+## | Sebastian | DevOps \& Release | CI/CD, Azure deployment, branch protection, README |
 
-## | Person B | Domain \& Persistence | Book/User/Order entities, DB schema, seed data |
+## | Owen | Domain \& Persistence | Book/User/Order entities, DB schema, seed data |
 
-## | Person C | Browse \& Search UI | Book catalog, filters, sorting, details page |
+## | Salim | Browse \& Search UI | Book catalog, filters, sorting, details page |
 
-## | Person D | Cart \& Checkout | Cart, inventory guard, checkout flow |
+## | Renee | Cart \& Checkout | Cart, inventory guard, checkout flow |
 
-## | Person E | Admin CRUD \& Recommendations | Admin book management, recommendations stub, unit tests |
+## | Nolan | Admin CRUD \& Recommendations | Admin book management, recommendations stub, unit tests |
 
 ## 
 
@@ -64,37 +64,17 @@
 
 ## 
 
-## \## ⚡ Features Implemented (M1)
+## \## ⚡ Milestone 1 Summary
 
 ## 
 
-## \### Customer Features
+## - Customer journey: Browse/search the catalog, view detailed pages, add/update cart items, and complete checkout with inventory enforcement.
 
-## \- Browse all books, search/filter/sort, view book details
+## - Admin tooling: Full book CRUD with ISBN validation, inventory rules, and a placeholder login so catalogue management stays secure.
 
-## \- Add to cart, update quantity
+## - Recommendations stub: Jaccard-similarity service at `/api/recommendations/{userId}` with previews on the home and detail pages.
 
-## \- Checkout with inventory enforcement
-
-## 
-
-## \### Admin Features
-
-## \- Create/Edit/Delete Books
-
-## \- Validate ISBN uniqueness, inventory ≥ 0
-
-## \- Admin login (M1 placeholder)
-
-## 
-
-## \### Recommendations (Stub)
-
-## \- Jaccard similarity on purchase history
-
-## \- `/api/recommendations/{userId}` returns top 3 recommendations
-
-## \- Preview displayed on home and book details pages
+## - Platform work: Seeded demo data, stood up CI/CD to Azure App Service, and exposed health checks for live monitoring.
 
 ## 
 
@@ -147,6 +127,5 @@
 ## mvn clean install
 
 ## mvn spring-boot:run
-
 
 
