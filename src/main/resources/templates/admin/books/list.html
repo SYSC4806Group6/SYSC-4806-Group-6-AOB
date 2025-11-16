@@ -6,7 +6,10 @@
 <body>
 <h1>Manage Books</h1>
 
-<a th:href="@{/admin/books/new}">Add New Book</a>
+<div style="margin-bottom: 1rem;">
+    <a th:href="@{/admin/features}" style="margin-right: 1rem;">Feature Toggles</a>
+    <a th:href="@{/admin/books/new}">Add New Book</a>
+</div>
 
 <table border="1">
     <thead>
