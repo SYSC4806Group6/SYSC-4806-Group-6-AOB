@@ -33,7 +33,7 @@ public class CheckoutController {
         model.addAttribute("cartItems", cart.getItems());
         model.addAttribute("cartTotal", cart.getAndCalculateTotalCartPrice());
 
-        return "/checkout/checkout";
+        return "checkout/checkout";
     }
 
     @PostMapping("/checkout")
@@ -67,6 +67,6 @@ public class CheckoutController {
 
         //session.removeAttribute("cart");
 
-        return "/checkout/confirmation";
+        return "checkout/confirmation";
     }
 }
