@@ -30,7 +30,7 @@ For Milestone 1 we committed to one complete customer journey:
 | Owen      |      |                  |
 | Salim     | UI Refresh | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script |
 | Renee     |      |                  |
-| Nolan     |      |                  |
+| Nolan     | Login/Authentication | Implemented Spring Security to allow users to register and log in with a custom username and password, added an admin auth to make sure only admin users can access specific features (eg. admin panel) |
 
 ## ⚡ Milestone 1 Summary
 - Delivered the customer journey end-to-end (browse → details → cart → checkout) with inventory enforcement.
