@@ -43,7 +43,7 @@ public class BookController {
         model.addAttribute("directions", Sort.Direction.values());
 
         ShoppingCart cart  = (ShoppingCart) session.getAttribute("cart");
-        int cartSize = cart != null ? cart.getItems().size() : 0;
+        int cartSize = cart != null ? cart.getTotalNumBooks() : 0;
         model.addAttribute("cartSize", cartSize);
 
         model.addAttribute("showAddToCart", ff4j.check("showAddToCart"));
