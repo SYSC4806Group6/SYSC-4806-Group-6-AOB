@@ -29,40 +29,68 @@ public class PurchaseReceiptService {
      * @return A new, populated, but unsaved PurchaseReceipt object.
      * @throws IllegalStateException if the cart is empty.
      */
+    /**
     public PurchaseReceipt buildReceiptFromCart(ShoppingCart cart) {
         if (cart == null || cart.getItems().isEmpty()) {
             throw new IllegalStateException("Cannot build receipt... empty cart provided.");
         }
-        User user = cart.getUser();
 
         // Initialize receipt
         PurchaseReceipt receipt = new PurchaseReceipt();
-        receipt.setUser(user);
         receipt.setOrderDateTime(LocalDateTime.now());
 
         // Load into from cart items into receipt items
-        List<PurchaseReceiptItem> receiptItems = new ArrayList<PurchaseReceiptItem>();
-        List<ShoppingCartItem> shoppingCartItems = cart.getItems();
-        double receiptTotal = 0;
-        for(ShoppingCartItem scItem : shoppingCartItems) {
-            PurchaseReceiptItem prItem = new PurchaseReceiptItem();
-            prItem.setPurchaseReceipt(receipt);
-            prItem.setBook(scItem.getBook());
-            prItem.setQuantity(scItem.getQuantity());
-            prItem.setPricePerBook(scItem.getBook().getPrice());
+        List<PurchaseReceiptItem> receiptItems = new ArrayList<>();
+        double total = 0;
+
+        for (ShoppingCartItem scItem : cart.getItems()) {
+            PurchaseReceiptItem prItem =
+                    new PurchaseReceiptItem(receipt, scItem.getBook(), scItem.getQuantity(), scItem.getBook().getPrice());
 
             receiptItems.add(prItem);
-
-            receiptTotal += prItem.getPricePerBook() * prItem.getQuantity();
+            total += prItem.getPricePerBook() * prItem.getQuantity();
         }
 
         // Finish adding purchase receipt information
         receipt.setItems(receiptItems);
-        receipt.setTotalCost(receiptTotal);
+        receipt.setTotalCost(total);
 
         // NOT PERSISTED (same with items)
         return receipt;
     }
+     */
+
+    @Transactional
+    public PurchaseReceipt buildAndSaveReceiptFromCart(ShoppingCart cart, User user,
+                                                       String shippingName, String shippingAddress, String email) {
+        // create blank receipt and save to get ID
+        PurchaseReceipt receipt = new PurchaseReceipt();
+        receipt.setUser(user);
+        receipt.setShippingName(shippingName);
+        receipt.setShippingAddress(shippingAddress);
+        receipt.setEmail(email);
+        receipt.setOrderDateTime(LocalDateTime.now());
+
+        receipt = purchaseReceiptRepository.save(receipt);
+
+        // create items and attach
+        double total = 0;
+        for (ShoppingCartItem scItem : cart.getItems()) {
+            PurchaseReceiptItem prItem = new PurchaseReceiptItem(
+                    receipt,
+                    scItem.getBook(),
+                    scItem.getQuantity(),
+                    scItem.getBook().getPrice()
+            );
+            receipt.addPurchaseReceiptItem(prItem);
+            total += prItem.getPricePerBook() * prItem.getQuantity();
+        }
+
+        // update total and save again
+        receipt.setTotalCost(total);
+        return purchaseReceiptRepository.save(receipt);
+    }
+
 
     // METHODS FOR VIEWING RECEIPTS
     @Transactional(readOnly = true)
@@ -73,7 +101,7 @@ public class PurchaseReceiptService {
     @Transactional(readOnly = true)
     public Optional<PurchaseReceipt> getReceiptForUser(Long receiptId, User user) {
         Optional<PurchaseReceipt> receiptOpt = purchaseReceiptRepository.findById(receiptId);
-
+        System.out.println("🔍 getReceiptForUser called with user=" + (user != null ? user.getId() : "null"));
         if (receiptOpt.isEmpty()) {
             return Optional.empty();
         }
@@ -84,5 +112,10 @@ public class PurchaseReceiptService {
         }
 
         return receiptOpt;
+    }
+
+    @Transactional
+    public PurchaseReceipt saveReceipt(PurchaseReceipt receipt) {
+        return purchaseReceiptRepository.save(receipt);
     }
 }

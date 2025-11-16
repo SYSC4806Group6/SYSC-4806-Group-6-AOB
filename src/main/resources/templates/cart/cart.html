@@ -13,6 +13,7 @@
             padding: 1rem 2rem;
             background-color: #f5f5f5;
         }
+
         header {
             display: flex;
             flex-wrap: wrap;
@@ -195,9 +196,7 @@
 
 <div class="actions" th:if="${!#lists.isEmpty(cartItems)}">
     <a th:href="@{/books}" class="continue-btn">← Continue Shopping</a>
-    <form th:action="@{/checkout}" method="post">
-        <button class="checkout-btn" type="submit">Proceed to Checkout</button>
-    </form>
+    <a th:href="@{/checkout}" class="checkout-btn">Proceed to Checkout</a>
 </div>
 
 <script>
