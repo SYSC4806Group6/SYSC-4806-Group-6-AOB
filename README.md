@@ -11,7 +11,9 @@ For Milestone 1 we committed to one complete customer journey:
 - Preview recommendations via a Jaccard-similarity stub.
 
 In Milestone 2 we:
-- Completed the full checkout processs with persistence of receipts
+- Completed the full checkout process with persistence of receipts
+- Cleaned up the UI upon site entry
+- See more in table details below...
 
 ## 🚀 Live Deployment
 - **App URL:** [https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12](https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12)
@@ -27,22 +29,22 @@ In Milestone 2 we:
 | Nolan     | Admin CRUD & Recs     | Admin book management, recommendation stub, unit tests             |
 
 ## 🧑‍💻 Team Roles (Milestone 2)
-| Person    | Role                         | Responsibilities |
-|-----------|------------------------------|------------------|
-| Sebastian |                              |                  |
-| Owen      |                              |                  |
-| Salim     | UI Refresh                   | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script |
-| Renee     | Complete Cart & Checkout Flow| Made all add to cart functionalities effective (all books show in cart with correct quantity, can inc/dec amount on cart page with up/down buttons and text box), completed checkout flow (shoppnig -> viewing cart -> proceed to checkout -> input checkout info -> checkout -> confirmation page), persisted receipts for users, details of past receipts viewable from receipts tab|
-| Nolan     |                              |                  |
+| Person    | Role                          | Responsibilities                                                                                                                                                                                                                                                                                                                                                                       |
+|-----------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Sebastian |                               |                                                                                                                                                                                                                                                                                                                                                                                        |
+| Owen      | Receipts & Diagram Updates    | Added process for converting a shopping cart to a receipt. Added views for users to see their receipt(s) and receipt details. Updated our diagrams to have the current UML and DB schema.                                                                                                                                                                                              |
+| Salim     | UI Refresh                    | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script                                                                                                                                   |
+| Renee     | Complete Cart & Checkout Flow | Made all add to cart functionalities effective (all books show in cart with correct quantity, can inc/dec amount on cart page with up/down buttons and text box), completed checkout flow (shoppnig -> viewing cart -> proceed to checkout -> input checkout info -> checkout -> confirmation page), persisted receipts for users, details of past receipts viewable from receipts tab |
+| Nolan     |                               |                                                                                                                                                                                                                                                                                                                                                                                        |
 
 ## 🧑‍💻 Team Roles Plan (Milestone 3)
-| Person    | Role     | Responsibilities |
-|-----------|----------|------------------|
-| Sebastian |          |                  |
-| Owen      |          |                  |
-| Salim     |          |                  |
-| Renee     | UI Match | Match UI across tabs and pages |
-| Nolan     |          |                  |
+| Person    | Role                                    | Responsibilities                                                                 |
+|-----------|-----------------------------------------|----------------------------------------------------------------------------------|
+| Sebastian |                                         |                                                                                  |
+| Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
+| Salim     |                                         |                                                                                  |
+| Renee     | UI Match                                | Match UI across tabs and pages                                                   |
+| Nolan     |                                         |                                                                                  |
 
 ## ⚡ Milestone 1 Summary
 - Delivered the customer journey end-to-end (browse → details → cart → checkout) with inventory enforcement.
@@ -56,11 +58,19 @@ In Milestone 2 we:
 - Refreshed the catalog UI (new header/search/cart badge, collapsible filters, modern book cards) and added cart page upgrades.
 - Documented the milestone, README updates, and prepared presentation assets to support the final demo.
 
-## ⚡ Milestone # Plan
+## ⚡ Milestone 3 Plan
 - Add recommendation functionality to main browsing page
 - Continue testing to ensure high quality web app
 - General clean up and matching of UI across pages annd tabs
 - Ensure all documentation is up to date and clear
+
+## Diagrams
+- Navigate to the "diagrams" directory in the repository to view our diagrams online
+### UML Diagram
+- https://github.com/SYSC4806Group6/SYSC-4806-Group-6-AOB/blob/main/diagrams/ModelUMLDiagram.pdf
+### Schema Diagram
+- https://github.com/SYSC4806Group6/SYSC-4806-Group-6-AOB/blob/main/diagrams/DB-SchemaDiagram.pdf
+
 
 ## 📦 Technology Stack
 - **Backend:** Spring Boot, Spring Data JPA, Thymeleaf
