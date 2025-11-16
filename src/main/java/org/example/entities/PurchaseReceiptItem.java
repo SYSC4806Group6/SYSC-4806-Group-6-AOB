@@ -37,7 +37,7 @@ public class PurchaseReceiptItem {
         this.purchaseReceipt = purchaseReceipt;
         this.purchaseReceipt.addPurchaseReceiptItem(this);
         this.book = book;
-        this.book.addPurchaseReceiptItem(this);
+        //this.book.addPurchaseReceiptItem(this);
         this.quantity = quantity;
         this.pricePerBook = pricePerBook;
     }
@@ -52,7 +52,7 @@ public class PurchaseReceiptItem {
         this.purchaseReceipt = purchaseReceipt;
         this.purchaseReceipt.addPurchaseReceiptItem(this);
         this.book = item.getBook();
-        this.book.addPurchaseReceiptItem(this);
+        //this.book.addPurchaseReceiptItem(this);
         this.quantity = item.getQuantity();
         this.pricePerBook = item.getBook().getPrice();
     }

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title>AmazinBookStore | Cart</title>
     <style>
         body {
@@ -9,6 +13,7 @@
             padding: 1rem 2rem;
             background-color: #f5f5f5;
         }
+
         header {
             display: flex;
             flex-wrap: wrap;
@@ -150,7 +155,7 @@
     <a th:href="@{/books}" class="cart-btn">← Continue Shopping</a>
 </header>
 
-<div th:if="${#lists.isEmpty(cartItems)}" class="alert">
+<div class="alert empty-message" th:if="${#lists.isEmpty(cartItems)}">
     Your cart is empty.
 </div>
 
@@ -169,18 +174,19 @@
 
             <div class="quantity">
                 <label>Qty:</label>
-                <form th:action="@{/cart/update}" method="post" style="display:flex;align-items:center;gap:0.5rem;">
+                <form th:action="@{/cart/update}" method="post"
+                      style="display:flex;align-items:center;gap:0.5rem;">
                     <input type="hidden" name="isbn" th:value="${item.book.isbn}">
-                    <input type="number" name="quantity" min="1" th:value="${item.quantity}">
-                    <button type="submit">Update</button>
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="qty-input">
                 </form>
             </div>
-
-            <form th:action="@{/cart/remove}" method="post" style="margin-top:0.5rem;">
-                <input type="hidden" name="isbn" th:value="${item.book.isbn}">
-                <button type="submit" style="background:none;border:none;color:red;cursor:pointer;">Remove</button>
-            </form>
         </div>
+
+        <button type="button"
+                class="remove-btn"
+                th:attr="data-isbn=${item.book.isbn}">
+            Remove
+        </button>
     </article>
 </section>
 
@@ -190,10 +196,121 @@
 
 <div class="actions" th:if="${!#lists.isEmpty(cartItems)}">
     <a th:href="@{/books}" class="continue-btn">← Continue Shopping</a>
-    <form th:action="@{/checkout}" method="post">
-        <button class="checkout-btn" type="submit">Proceed to Checkout</button>
-    </form>
+    <a th:href="@{/checkout}" class="checkout-btn">Proceed to Checkout</a>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
+        const buttons = document.querySelectorAll(".remove-btn");
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const isbn = this.dataset.isbn;
+
+                fetch(`/cart/remove/${isbn}`, {
+                    method: "POST",
+                    headers: {[header]: token}
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const bookCard = this.closest(".book-card");
+                    if (!bookCard) return
+
+                    const qtyInput = bookCard.querySelector('input[name="quantity"]');
+                    if (qtyInput) {
+                        let currentQty = parseInt(qtyInput.value);
+
+                        if (currentQty > 1) {
+                            qtyInput.value = currentQty - 1;
+                        } else {
+                            bookCard.remove();
+                        }
+                    } else {
+                        bookCard.remove();
+                    }
+
+                    const cartCount = document.getElementById("cart-count");
+                    if (cartCount) cartCount.textContent = data.itemCount;
+
+                    fetch("/cart/total")
+                        .then(response => response.json())
+                        .then(totalData => {
+                            const totalElement = document.querySelector(".cart-total span");
+                            if (totalElement) {
+                                totalElement.textContent = totalData.total.toFixed(2);
+                            }
+                        });
+
+                    if (data.itemCount === 0) {
+
+                        document.querySelector(".book-grid")?.remove();
+                        document.querySelector(".cart-total")?.remove();
+                        document.querySelector(".actions")?.remove();
+
+                        let emptyMsg = document.querySelector(".empty-message");
+                        if (!emptyMsg) {
+                            emptyMsg = document.createElement("div");
+                            emptyMsg.classList.add("alert", "empty-message");
+                            emptyMsg.textContent = "Your cart is empty.";
+                            const header = document.querySelector("header");
+                            header.insertAdjacentElement("afterend", emptyMsg);
+                        } else {
+                            emptyMsg.style.display = "block";
+                        }
+                    }
+
+                })
+                .catch(error => console.error("Error removing item:", error));
+            });
+        });
+
+        const qtyInputs = document.querySelectorAll('.qty-input');
+
+        qtyInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const newQty = parseInt(this.value);
+                const isbn = this.closest("form").querySelector('input[name="isbn"]').value
+
+                if (isNaN(newQty) || newQty < 1) {
+                    this.value = 1;
+                    return;
+                }
+
+                fetch(`/cart/update/${isbn}?quantity=${newQty}`, {
+                    method: "POST",
+                    headers: { [header]: token }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const cartCount = document.getElementById("cart-count");
+                        if (cartCount) cartCount.textContent = data.itemCount;
+
+                        fetch("/cart/total")
+                            .then(response => response.json())
+                            .then(totalData => {
+                                const totalElement = document.querySelector(".cart-total span");
+                                if (totalElement) {
+                                    totalElement.textContent = totalData.total.toFixed(2);
+                                }
+                            });
+                    })
+                .catch(error => console.error("Error updating quantity:", error));
+            });
+        });
+
+        fetch("/cart/total")
+            .then(response => response.json())
+            .then(totalData => {
+                const totalElement = document.querySelector(".cart-total span");
+                if (totalElement) {
+                    totalElement.textContent = totalData.total.toFixed(2);
+                }
+            });
+    });
+</script>
 
 </body>
 </html>

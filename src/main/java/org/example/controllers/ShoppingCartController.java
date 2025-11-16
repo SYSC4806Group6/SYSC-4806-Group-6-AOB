@@ -8,6 +8,8 @@ import org.example.entities.User;
 import org.example.services.BookCatalogService;
 import org.example.services.BookService;
 import org.example.services.ShoppingCartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +21,15 @@ import java.util.Map;
 @RequestMapping("/cart")
 public class ShoppingCartController {
 
+    private static final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
     private final BookCatalogService bookCatalogService;
+
+    @Autowired
+    private ShoppingCartService ShoppingCartService;
 
     public ShoppingCartController(BookCatalogService bookCatalogService) {
         this.bookCatalogService = bookCatalogService;
     }
-
-    @Autowired
-    private ShoppingCartService ShoppingCartService;
 
     @PostMapping("/add/{isbn}")
     @ResponseBody
@@ -42,5 +45,64 @@ public class ShoppingCartController {
 
         int itemCount = ShoppingCartService.getTotalItemCount(cart);
         return Map.of("itemCount", itemCount);
+    }
+
+    @GetMapping
+    public String viewCart(HttpSession session, Model model) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+
+        model.addAttribute("cartItems", cart.getItems());
+        model.addAttribute("totalPrice", cart.getAndCalculateTotalCartPrice());
+
+        return "cart/cart";
+    }
+
+    @PostMapping("/remove/{isbn}")
+    @ResponseBody
+    public Map<String, Object> removeFromCart(@PathVariable String isbn, HttpSession session) {
+
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+            session.setAttribute("cart", cart);
+        }
+
+        ShoppingCartService.removeBookFromCart(cart, isbn);
+
+        session.setAttribute("cart", cart);
+
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        return Map.of("itemCount", itemCount);
+    }
+
+    @PostMapping("/update/{isbn}")
+    @ResponseBody
+    public Map<String, Object> updateCart(@PathVariable String isbn, @RequestParam int quantity, HttpSession session) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ShoppingCart();
+        }
+
+        ShoppingCartService.updateBookQuantity(cart, isbn, quantity);
+
+        session.setAttribute("cart", cart);
+
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        double total = cart.getAndCalculateTotalCartPrice();
+
+        return Map.of("itemCount", itemCount);
+
+    }
+
+    @GetMapping("/total")
+    @ResponseBody
+    public Map<String, Object> getCartTotal(HttpSession session) {
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        double total = (cart != null) ? cart.getAndCalculateTotalCartPrice() : 0.00;
+        return Map.of("total", total);
     }
 }
