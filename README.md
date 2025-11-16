@@ -1,152 +1,67 @@
-## \# Amazin Bookstore - Milestone 1
-
-## 
-
-## \## 🌟 Project Overview
-
-## Amazin Bookstore is a Spring Boot + Azure web application for browsing, searching, and purchasing books.  
-
-## \*\*Milestone 1 Goal:\*\* Deliver one end-to-end user journey in production:
-
-## 
-
-## \*\*Browse/Search → View Book Details → Add to Cart → Checkout\*\*  
-
-## Includes:
-
-## \- Admin CRUD for books
-
-## \- Recommendations (stub, M1 preview)
-
-## \- Inventory enforcement on checkout
-
-## \- Seeded demo data
-
-## 
-
-## ---
-
-## 
-
-## \## 🚀 Live Deployment 
-
-## - **[Azure App Service URL](https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12)**
-
-## \- \*\*Health Check Endpoint:\*\* `/actuator/health`
-
-## 
-
-## ---
-
-## 
-
-## \## 🧑‍💻 Team Roles
-
-## 
-
-## | Person | Role | Responsibilities |
-
-## |--------|------|-----------------|
-
-## | Person A | DevOps \& Release | CI/CD, Azure deployment, branch protection, README |
-
-## | Person B | Domain \& Persistence | Book/User/Order entities, DB schema, seed data |
-
-## | Person C | Browse \& Search UI | Book catalog, filters, sorting, details page |
-
-## | Person D | Cart \& Checkout | Cart, inventory guard, checkout flow |
-
-## | Person E | Admin CRUD \& Recommendations | Admin book management, recommendations stub, unit tests |
-
-## 
-
-## ---
-
-## 
-
-## \## ⚡ Features Implemented (M1)
-
-## 
-
-## \### Customer Features
-
-## \- Browse all books, search/filter/sort, view book details
-
-## \- Add to cart, update quantity
-
-## \- Checkout with inventory enforcement
-
-## 
-
-## \### Admin Features
-
-## \- Create/Edit/Delete Books
-
-## \- Validate ISBN uniqueness, inventory ≥ 0
-
-## \- Admin login (M1 placeholder)
-
-## 
-
-## \### Recommendations (Stub)
-
-## \- Jaccard similarity on purchase history
-
-## \- `/api/recommendations/{userId}` returns top 3 recommendations
-
-## \- Preview displayed on home and book details pages
-
-## 
-
-## ---
-
-## 
-
-## \## 📦 Technology Stack
-
-## \- \*\*Backend:\*\* Spring Boot, Spring Data JPA, Thymeleaf
-
-## \- \*\*Database:\*\* PostgreSQL (Azure) / H2 (local dev)
-
-## \- \*\*Frontend:\*\* Thymeleaf templates + minimal CSS
-
-## \- \*\*Deployment:\*\* Azure App Service
-
-## \- \*\*CI/CD:\*\* GitHub Actions, branch protection rules
-
-## 
-
-## ---
-
-## 
-
-## \## 🛠️ Getting Started
-
-## 
-
-## \### Prerequisites
-
-## \- Java 17+
-
-## \- Maven
-
-## \- PostgreSQL or H2 for local dev
-
-## \- Git
-
-## 
-
-## \### Run Locally
-
-## ```bash
-
-## git clone <repo-url>
-
-## cd amazin-bookstore
-
-## mvn clean install
-
-## mvn spring-boot:run
-
-
-
+# Amazin Bookstore – Milestone 1
+
+## 🌟 Project Overview
+Amazin Bookstore is a Spring Boot + Azure web application for browsing, searching, and purchasing books.  
+For Milestone 1 we committed to one complete customer journey:
+
+- Browse and search the catalog with filters, sorting, and pagination.
+- View detailed book pages.
+- Add/update items in the cart and enforce inventory at checkout.
+- Keep catalogue data healthy with admin CRUD, validation, and demo data.
+- Preview recommendations via a Jaccard-similarity stub.
+
+## 🚀 Live Deployment
+- **App URL:** [https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12](https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/books?searchTerm=&publisher=&tag=&sortBy=title&sortDirection=ASC&size=12)
+- **Health Check:** `https://4806project-h8baaucbawg4eahb.canadacentral-01.azurewebsites.net/actuator/health`
+
+## 🧑‍💻 Team Roles (Milestone 1)
+| Person    | Role                  | Responsibilities                                                   |
+|-----------|-----------------------|--------------------------------------------------------------------|
+| Sebastian | DevOps & Release      | CI/CD, Azure deployment, branch protection, README                 |
+| Owen      | Domain & Persistence  | Book/User/Order entities, DB schema, seed data                     |
+| Salim     | Browse & Search UI    | Book catalog, filters, sorting, details page                       |
+| Renee     | Cart & Checkout       | Cart, inventory guard, checkout flow                               |
+| Nolan     | Admin CRUD & Recs     | Admin book management, recommendation stub, unit tests             |
+
+## 🧑‍💻 Team Roles (Milestone 2)
+| Person    | Role | Responsibilities |
+|-----------|------|------------------|
+| Sebastian |      |                  |
+| Owen      |      |                  |
+| Salim     | UI Refresh | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script |
+| Renee     |      |                  |
+| Nolan     |      |                  |
+
+## ⚡ Milestone 1 Summary
+- Delivered the customer journey end-to-end (browse → details → cart → checkout) with inventory enforcement.
+- Built admin tooling for book CRUD, ISBN validation, and seed data to support demos.
+- Shipped a recommendation stub exposed at `/api/recommendations/{userId}` and surfaced on catalog/detail views.
+- Set up CI/CD to Azure App Service with health checks and demo content for rapid testing.
+
+## ⚡ Milestone 2 Summary
+- Introduced buyer authentication/registration plus revamped cart and checkout flows with persistent session storage.
+- Added purchase receipt tracking, viewable history pages, and feature toggles (FF4J) to gradually roll out UI experiments.
+- Refreshed the catalog UI (new header/search/cart badge, collapsible filters, modern book cards) and added cart page upgrades.
+- Documented the milestone, README updates, and prepared presentation assets to support the final demo.
+
+## 📦 Technology Stack
+- **Backend:** Spring Boot, Spring Data JPA, Thymeleaf
+- **Database:** PostgreSQL (Azure) / H2 for local development
+- **Frontend:** Server-side Thymeleaf templates + lightweight CSS
+- **Deployment:** Azure App Service
+- **CI/CD:** GitHub Actions with branch protection rules
+
+## 🛠️ Getting Started
+### Prerequisites
+- Java 17+
+- Maven
+- Git
+- PostgreSQL or H2 (default profile uses H2)
+
+### Run Locally
+```bash
+git clone <repo-url>
+cd amazin-bookstore
+mvn clean install
+mvn spring-boot:run
+```
