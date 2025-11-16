@@ -3,7 +3,9 @@ package org.example.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.entities.PurchaseReceipt;
 import org.example.entities.ShoppingCart;
+import org.example.entities.User;
 import org.example.repositories.PurchaseReceiptRepository;
+import org.example.security.CustomUserDetails;
 import org.example.services.PurchaseReceiptService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class CheckoutController {
     }
 
     @PostMapping("/checkout")
-    public String processCheckout(HttpSession session, @AuthenticationPrincipal org.example.entities.User user,
+    public String processCheckout(HttpSession session, @AuthenticationPrincipal CustomUserDetails userDetails,
                                   @RequestParam String email,
                                   @RequestParam String name,
                                   @RequestParam String address,
@@ -49,9 +51,13 @@ public class CheckoutController {
             return "redirect:/cart/cart";
         }
 
+        User user = userDetails.getUser();
         String fullAddress = address + ", " + city + ", " + state + " " + zip + ", " + country;
 
         PurchaseReceipt saved = purchaseReceiptService.buildAndSaveReceiptFromCart(cart, user, name, fullAddress, email);
+
+        //clear the cart
+        session.removeAttribute("cart");
 
         model.addAttribute("receipt", saved);
         model.addAttribute("customerName", name);
@@ -59,9 +65,8 @@ public class CheckoutController {
         model.addAttribute("address", address + ", " + city + ", " + state + " " + zip + ", " + country);
         model.addAttribute("message", "Thank you for your order!");
 
-        session.removeAttribute("cart");
+        //session.removeAttribute("cart");
 
         return "/checkout/confirmation";
     }
-
 }
