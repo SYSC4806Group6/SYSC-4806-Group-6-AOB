@@ -31,10 +31,12 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String listBooks(@ModelAttribute("criteria") BookSearchCriteria criteria, Model model, HttpSession session) {
+    public String listBooks(@ModelAttribute("criteria") BookSearchCriteria criteria,
+                            Model model,
+                            HttpSession session) {
+
         Page<Book> page = bookCatalogService.searchBooks(criteria);
 
-        // Surface search results along with filter metadata for the Thymeleaf view.
         model.addAttribute("page", page);
         model.addAttribute("books", page.getContent());
         model.addAttribute("publishers", bookCatalogService.listPublishers());
@@ -42,12 +44,38 @@ public class BookController {
         model.addAttribute("sortOptions", List.of("title", "author", "price"));
         model.addAttribute("directions", Sort.Direction.values());
 
-        ShoppingCart cart  = (ShoppingCart) session.getAttribute("cart");
+        //cart
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         int cartSize = cart != null ? cart.getTotalNumBooks() : 0;
         model.addAttribute("cartSize", cartSize);
 
-        model.addAttribute("showAddToCart", ff4j.check("showAddToCart"));
-        model.addAttribute("newCatalogLayout", ff4j.check("newCatalogLayout"));
+        boolean baseAddToCart = ff4j.check("showAddToCart");
+        boolean showAddToCart = false;
+
+        if (baseAddToCart) {
+            int percent = ff4j.getProperty("showAddToCart.rollout").asInt();
+
+            String sessionId = session.getId();
+            int hash = Math.abs(sessionId.hashCode() % 100);
+
+            showAddToCart = (hash < percent);
+        }
+
+        model.addAttribute("showAddToCart", showAddToCart);
+
+        boolean baseLayout = ff4j.check("newCatalogLayout");
+        boolean newCatalogLayout = false;
+
+        if (baseLayout) {
+            int percent = ff4j.getProperty("newCatalogLayout.rollout").asInt();
+
+            String sessionId = session.getId();
+            int hash = Math.abs((sessionId + "layout").hashCode() % 100);
+
+            newCatalogLayout = (hash >= percent);
+        }
+
+        model.addAttribute("newCatalogLayout", newCatalogLayout);
 
         return "books/list";
     }

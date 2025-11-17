@@ -9,21 +9,34 @@
 <table border="1" cellpadding="6" cellspacing="0">
     <tr>
         <th>Feature</th>
-        <th>Status</th>
-        <th>Toggle</th>
+        <th>Rollout %</th>
+        <th>Update</th>
     </tr>
 
-    <tr th:each="feature : ${features}">
-        <td th:text="${feature.uid}"></td>
-        <td th:text="${feature.enable ? 'Enabled' : 'Disabled'}"></td>
+    <tr>
+        <td>showAddToCart</td>
         <td>
-            <form th:action="@{/admin/features/toggle}" method="post">
-                <input type="hidden" name="featureName" th:value="${feature.uid}" />
-                <input type="checkbox" name="enabled"
-                       th:checked="${feature.enable}"
-                       onchange="this.form.submit()">
+            <form th:action="@{/admin/features/property}" method="post">
+                <input type="number" min="0" max="100" name="value"
+                       th:value="${showAddToCartRollout}">
+                <input type="hidden" name="propertyName" value="showAddToCart.rollout">
+                <button type="submit">Save</button>
             </form>
         </td>
+        <td>0–100%</td>
+    </tr>
+
+    <tr>
+        <td>newCatalogLayout</td>
+        <td>
+            <form th:action="@{/admin/features/property}" method="post">
+                <input type="number" min="0" max="100" name="value"
+                       th:value="${newCatalogLayoutRollout}">
+                <input type="hidden" name="propertyName" value="newCatalogLayout.rollout">
+                <button type="submit">Save</button>
+            </form>
+        </td>
+        <td>0–100%</td>
     </tr>
 </table>
 
