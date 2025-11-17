@@ -31,7 +31,7 @@ In Milestone 2 we:
 ## 🧑‍💻 Team Roles (Milestone 2)
 | Person    | Role                          | Responsibilities                                                                                                                                                                                                                                                                                                                                                                       |
 |-----------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Sebastian | ff4j implementation | Added ff4j dependencies, and toggling feature enabling canary rollout and kill switch. Updated some Ui bugs and features (Layout and Cart button). Fixed some small test cases.                                                                                                                                                                                                                      |
+| Sebastian | FF4J implementation | Added FF4J dependencies, and toggling feature enabling canary rollout and kill switch. Updated some Ui bugs and features (Layout and Cart button). Fixed some small test cases.                                                                                                                                                                                                                      |
 | Owen      | Receipts & Diagram Updates    | Added process for converting a shopping cart to a receipt. Added views for users to see their receipt(s) and receipt details. Updated our diagrams to have the current UML and DB schema.                                                                                                                                                                                              |
 | Salim     | UI Refresh                    | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script                                                                                                                                   |
 | Renee     | Complete Cart & Checkout Flow | Made all add to cart functionalities effective (all books show in cart with correct quantity, can inc/dec amount on cart page with up/down buttons and text box), completed checkout flow (shoppnig -> viewing cart -> proceed to checkout -> input checkout info -> checkout -> confirmation page), persisted receipts for users, details of past receipts viewable from receipts tab |
@@ -42,7 +42,7 @@ In Milestone 2 we:
 |-----------|-----------------------------------------|----------------------------------------------------------------------------------|
 | Sebastian | Testing/ extending admin                | Updating admin to be able to control other user accounts, and tests              |
 | Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
-| Salim     |                                         |                                                                                  |
+| Salim     | Functionality Clean Up                  | Thoroughly checking all funcitonalities and maximizing functionality                         |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
 | Nolan     | Third Party oAuth / Clean up and polish | So users can sign in using Google, and cleanup for the final product/testing     |
 
@@ -60,10 +60,10 @@ In Milestone 2 we:
 - Documented the milestone, README updates, and prepared presentation assets to support the final demo.
 
 ## ⚡ Milestone 3 Plan
-- Add recommendation functionality to main browsing page
-- Continue testing to ensure high quality web app
-- General clean up and matching of UI across pages annd tabs
-- Ensure all documentation is up to date and clear
+- Add recommendation functionality to main browsing page.
+- Continue testing to ensure high quality web app.
+- General clean up and matching of UI across pages and tabs.
+- Ensure all documentation is up to date and clear.
 
 ## Diagrams
 - Navigate to the "diagrams" directory in the repository to view our diagrams online
