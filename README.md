@@ -31,11 +31,11 @@ In Milestone 2 we:
 ## 🧑‍💻 Team Roles (Milestone 2)
 | Person    | Role                          | Responsibilities                                                                                                                                                                                                                                                                                                                                                                       |
 |-----------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Sebastian |                               | Added ff4j dependencies, and toggling feature enabling canary rollout and kill switch. Updated some Ui bugs and features (Layout and Cart button). Fixed some small test cases.                                                                                                                                                                                                                                            |
+| Sebastian | ff4j implementation | Added ff4j dependencies, and toggling feature enabling canary rollout and kill switch. Updated some Ui bugs and features (Layout and Cart button). Fixed some small test cases.                                                                                                                                                                                                                      |
 | Owen      | Receipts & Diagram Updates    | Added process for converting a shopping cart to a receipt. Added views for users to see their receipt(s) and receipt details. Updated our diagrams to have the current UML and DB schema.                                                                                                                                                                                              |
 | Salim     | UI Refresh                    | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script                                                                                                                                   |
 | Renee     | Complete Cart & Checkout Flow | Made all add to cart functionalities effective (all books show in cart with correct quantity, can inc/dec amount on cart page with up/down buttons and text box), completed checkout flow (shoppnig -> viewing cart -> proceed to checkout -> input checkout info -> checkout -> confirmation page), persisted receipts for users, details of past receipts viewable from receipts tab |
-| Nolan     |                               |                                                                                                                                                                                                                                                                                                                                                                                        |
+| Nolan     | Login/Authentication | Implemented Spring Security to allow users to register and log in with a custom username and password, added an admin auth to make sure only admin users can access specific features (eg. admin panel) |
 
 ## 🧑‍💻 Team Roles Plan (Milestone 3)
 | Person    | Role                                    | Responsibilities                                                                 |
@@ -45,13 +45,7 @@ In Milestone 2 we:
 | Salim     |                                         |                                                                                  |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
 | Nolan     |                                         |                                                                                  |
-| Person    | Role | Responsibilities |
-|-----------|------|------------------|
-| Sebastian |      |                  |
-| Owen      |      |                  |
-| Salim     | UI Refresh | Modernized catalog header/search/cart controls, built collapsible sidebar filters with custom checkboxes, redesigned book cards with hover interactions and cart badge/CSRF fixes, refreshed README content, prepared presentation slides and script |
-| Renee     |      |                  |
-| Nolan     | Login/Authentication | Implemented Spring Security to allow users to register and log in with a custom username and password, added an admin auth to make sure only admin users can access specific features (eg. admin panel) |
+
 
 ## ⚡ Milestone 1 Summary
 - Delivered the customer journey end-to-end (browse → details → cart → checkout) with inventory enforcement.
