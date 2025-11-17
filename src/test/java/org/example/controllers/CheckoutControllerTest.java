@@ -75,7 +75,7 @@ class CheckoutControllerTest {
 
         mockMvc.perform(get("/checkout").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/checkout/checkout"))
+                .andExpect(view().name("checkout/checkout"))
                 .andExpect(model().attributeExists("cartItems", "cartTotal"));
     }
 
@@ -116,7 +116,7 @@ class CheckoutControllerTest {
                         .param("zip", "A1A1A1")
                         .param("country", "Canada"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/checkout/confirmation"))
+                .andExpect(view().name("checkout/confirmation"))
                 .andExpect(model().attributeExists("receipt"));
     }
 }
