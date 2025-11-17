@@ -35,8 +35,6 @@ public class FeatureToggleController {
     @PostMapping("/toggle")
     public String toggleFeature(@RequestParam String featureName,
                                 @RequestParam(required = false) String enabled) {
-
-        System.out.println("poop POST: featureName=" + featureName + ", enabled=" + enabled);
         if (enabled != null) {
             ff4j.enable(featureName);
         } else {

@@ -35,7 +35,6 @@ public class BookController {
                             Model model,
                             HttpSession session) {
 
-        System.out.println("ENABLE STATUS newCatalogLayout = " + ff4j.check("newCatalogLayout"));
         Page<Book> page = bookCatalogService.searchBooks(criteria);
 
         model.addAttribute("page", page);
