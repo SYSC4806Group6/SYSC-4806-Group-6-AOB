@@ -1,7 +1,6 @@
-package org.example;
+package org.example.repositories;
 
 import org.example.entities.Book;
-import org.example.repositories.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

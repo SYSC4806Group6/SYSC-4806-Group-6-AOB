@@ -140,7 +140,7 @@
                 <td th:text="${#temporals.format(receipt.orderDateTime, 'yyyy-MM-dd HH:mm')}">2025-11-10 12:00</td>
                 <td th:text="${#numbers.formatDecimal(receipt.totalCost, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
                 <td>
-                    <a th:href="@{/purchaseReceipts/{id}(id=${receipt.id})}">View Details</a>
+                    <a th:href="@{/purchaseReceipts/{id}(id=${receipt.id})}" class="view-btn">View Details</a>
                 </td>
             </tr>
             </tbody>

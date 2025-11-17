@@ -2,6 +2,7 @@ package org.example.services;
 
 import org.example.entities.User;
 import org.example.repositories.UserRepository;
+import org.example.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,11 +30,8 @@ public class CustomUserDetailService implements UserDetailsService {
         // Convert your User entity's role to a Spring Security GrantedAuthority
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getUserRole().name());
 
-        // Return a Spring Security User object
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                Collections.singleton(authority)
-        );
+        // Wrap the application's User entity in a UserDetails implementation for Spring Security
+        // @AuthenricationPrincipal can access User later
+        return new CustomUserDetails(user, Collections.singleton(authority));
     }
 }
