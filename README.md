@@ -44,7 +44,7 @@ In Milestone 2 we:
 | Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
 | Salim     |                                         |                                                                                  |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
-| Nolan     |                                         |                                                                                  |
+| Nolan     | Third Party oAuth / Clean up and polish | So users can sign in using Google, and cleanup for the final product/testing     |
 
 
 ## ⚡ Milestone 1 Summary
