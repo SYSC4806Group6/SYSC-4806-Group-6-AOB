@@ -22,6 +22,13 @@ public class FeatureToggleController {
     public String featureList(Model model) {
         Map<String, Feature> features = ff4j.getFeatures();
         model.addAttribute("features", features.values());
+
+        int addToCartRollout = ff4j.getProperty("showAddToCart.rollout").asInt();
+        int layoutRollout = ff4j.getProperty("newCatalogLayout.rollout").asInt();
+
+        model.addAttribute("showAddToCartRollout", addToCartRollout);
+        model.addAttribute("newCatalogLayoutRollout", layoutRollout);
+
         return "admin/books/features";
     }
 
@@ -29,6 +36,7 @@ public class FeatureToggleController {
     public String toggleFeature(@RequestParam String featureName,
                                 @RequestParam(required = false) String enabled) {
 
+        System.out.println("poop POST: featureName=" + featureName + ", enabled=" + enabled);
         if (enabled != null) {
             ff4j.enable(featureName);
         } else {
@@ -37,4 +45,13 @@ public class FeatureToggleController {
 
         return "redirect:/admin/features";
     }
+
+    @PostMapping("/property")
+    public String updateProperty(@RequestParam String propertyName,
+                                 @RequestParam int value) {
+
+        ff4j.getPropertiesStore().updateProperty(propertyName, String.valueOf(value));
+        return "redirect:/admin/features";
+    }
+
 }
