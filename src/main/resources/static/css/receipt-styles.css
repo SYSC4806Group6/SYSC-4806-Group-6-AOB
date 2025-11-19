@@ -1,0 +1,62 @@
+.action-link {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    background-color: #ddd;
+    color: #333;
+}
+.orders-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.orders-table th, .orders-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 8px;
+    text-align: left;
+}
+.orders-table th {
+    background-color: #f9f9f9;
+}
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+.orders-table a {
+    color: #2d6cdf;
+    text-decoration: none;
+    font-weight: bold;
+}
+/* --- Details --- */
+.summary {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1.5rem;
+}
+.summary p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.items-table th, .items-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+.items-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+.items-table td:nth-of-type(3), /* Price */
+.items-table td:nth-of-type(4), /* Qty */
+.items-table td:nth-of-type(5)  /* Line Total */
+{
+    text-align: right;
+}
