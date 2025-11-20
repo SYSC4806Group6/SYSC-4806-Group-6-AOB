@@ -1,7 +1,9 @@
 package org.example.controllers;
 
 import org.example.entities.Book;
+import org.example.services.BookService;
 import org.example.services.CustomUserDetailService;
+import org.example.services.ShoppingCartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
@@ -44,7 +45,13 @@ class CheckoutControllerTest {
     private PurchaseReceiptService receiptService;
 
     @MockBean
+    private ShoppingCartService shoppingCartService;
+
+    @MockBean
     private CustomUserDetailService customUserDetailService;
+
+    @MockBean
+    private BookService bookService;
 
     private ShoppingCart cart;
     private CustomUserDetails userDetails;
@@ -59,6 +66,7 @@ class CheckoutControllerTest {
         userDetails = new CustomUserDetails(user, List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
 
         Book dune = new Book("123", "Dune", "Desc", List.of(), null, "Frank Herbert", "Ace", 10.00);
+        dune.setInventoryQuantity(2);
         ShoppingCartItem item = new ShoppingCartItem();
         item.setBook(dune);
         item.setQuantity(2);
@@ -96,6 +104,10 @@ class CheckoutControllerTest {
         PurchaseReceipt saved = new PurchaseReceipt();
         saved.setId(99L);
         saved.setUser(user);
+
+        given(bookService.hasSufficientStock(any(), anyInt())).willReturn(true);
+
+        given(shoppingCartService.hasAvalibleStock(any())).willReturn(true);
 
         given(receiptService.buildAndSaveReceiptFromCart(any(), any(), anyString(), anyString(), anyString()))
                 .willReturn(saved);
