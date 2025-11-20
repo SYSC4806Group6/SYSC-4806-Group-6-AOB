@@ -4,23 +4,26 @@ import jakarta.servlet.http.HttpSession;
 import org.example.entities.PurchaseReceipt;
 import org.example.entities.ShoppingCart;
 import org.example.entities.User;
-import org.example.repositories.PurchaseReceiptRepository;
 import org.example.security.CustomUserDetails;
 import org.example.services.PurchaseReceiptService;
+import org.example.services.ShoppingCartService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CheckoutController {
 
     private final PurchaseReceiptService purchaseReceiptService;
+    private final ShoppingCartService shoppingCartService;
 
-    public CheckoutController(PurchaseReceiptService purchaseReceiptService) {
+    public CheckoutController(PurchaseReceiptService purchaseReceiptService, ShoppingCartService shoppingCartService) {
         this.purchaseReceiptService = purchaseReceiptService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping("/checkout")
@@ -45,10 +48,17 @@ public class CheckoutController {
                                   @RequestParam String state,
                                   @RequestParam String zip,
                                   @RequestParam String country,
-                                  Model model) {
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         if (cart == null || cart.getItems().isEmpty()) {
             return "redirect:/cart/cart";
+        }
+
+        if (!shoppingCartService.hasAvalibleStock(cart)) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Checkout failed: not have enough stock.");
+            return "redirect:/cart"; // Send them back to cart
         }
 
         User user = userDetails.getUser();

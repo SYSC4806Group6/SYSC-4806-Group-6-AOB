@@ -37,8 +37,26 @@ public class AdminBookController {
     // Handle form submission for creating a new book
     @PostMapping("/save")
     public String saveBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
-        bookRepository.save(book);
-        redirectAttributes.addFlashAttribute("successMessage", "Book saved successfully!");
+
+        if (bookRepository.existsById(book.getIsbn())) {
+            Book existingBook = bookRepository.findById(book.getIsbn()).orElseThrow();
+
+            // Manually update ONLY the editable fields
+            existingBook.setTitle(book.getTitle());
+            existingBook.setAuthor(book.getAuthor());
+            existingBook.setPublisher(book.getPublisher());
+            existingBook.setPrice(book.getPrice());
+            existingBook.setDescription(book.getDescription());
+            existingBook.setInventoryQuantity(book.getInventoryQuantity());
+            existingBook.setPictureUrl(book.getPictureUrl());
+
+            bookRepository.save(existingBook);
+            redirectAttributes.addFlashAttribute("successMessage", "Book updated successfully!");
+        } else {
+            bookRepository.save(book);
+            redirectAttributes.addFlashAttribute("successMessage", "Book created successfully!");
+        }
+
         return "redirect:/admin/books";
     }
 

@@ -1,6 +1,7 @@
 package org.example.services;
 
 import org.example.entities.*;
+import org.example.repositories.BookRepository;
 import org.example.repositories.PurchaseReceiptRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class PurchaseReceiptService {
 
     private final PurchaseReceiptRepository purchaseReceiptRepository;
+    private final BookService bookService;
 
-    public PurchaseReceiptService(PurchaseReceiptRepository purchaseReceiptRepository) {
+    public PurchaseReceiptService(PurchaseReceiptRepository purchaseReceiptRepository, BookService bookService) {
         this.purchaseReceiptRepository = purchaseReceiptRepository;
+        this.bookService = bookService;
     }
 
     /**
@@ -84,6 +87,8 @@ public class PurchaseReceiptService {
             );
             receipt.addPurchaseReceiptItem(prItem);
             total += prItem.getPricePerBook() * prItem.getQuantity();
+            //Decrease the available Inventory Quantity
+            bookService.decrementBookInventoryQuantity(scItem.getBook(), prItem.getQuantity());
         }
 
         // update total and save again

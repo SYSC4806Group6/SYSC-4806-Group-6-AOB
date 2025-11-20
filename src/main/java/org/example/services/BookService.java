@@ -50,6 +50,28 @@ public class BookService {
     }
 
     /**
+     * Decrement a book's inventory count
+     * @param book Book object
+     * @param quantity the number to be negated
+     */
+    public void decrementBookInventoryQuantity(Book book, int quantity) {
+        book.setInventoryQuantity(book.getInventoryQuantity() - quantity);
+        saveBook(book);
+    }
+
+    /**
+     * Checks if the book has available stick for checkout
+     * @param book book
+     * @param requestedQuantity number of books in the cart
+     * @return True if books are available, False otherwise
+     */
+    public boolean hasSufficientStock(Book book, int requestedQuantity) {
+        // Fetch the fresh entity from DB to get real-time stock
+        Book freshBook = getBookByIsbn(book.getIsbn());
+        return freshBook.getInventoryQuantity() >= requestedQuantity;
+    }
+
+    /**
      * Save a book (for admin purposes)
      */
     public Book saveBook(Book book) {

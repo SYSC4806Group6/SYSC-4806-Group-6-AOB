@@ -23,12 +23,14 @@ public class ShoppingCartController {
 
     private static final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
     private final BookCatalogService bookCatalogService;
+    private final BookService bookService;
 
     @Autowired
     private ShoppingCartService ShoppingCartService;
 
-    public ShoppingCartController(BookCatalogService bookCatalogService) {
+    public ShoppingCartController(BookCatalogService bookCatalogService, BookService bookService) {
         this.bookCatalogService = bookCatalogService;
+        this.bookService = bookService;
     }
 
     @PostMapping("/add/{isbn}")
@@ -41,7 +43,12 @@ public class ShoppingCartController {
         }
 
         Book book = bookCatalogService.getBookOrThrow(isbn);
-        ShoppingCartService.addBookToCart(cart, book);
+
+        // Don't complete the add if: stock is unavailable or already holding the potential stock in cart
+        // Check the stock with the amount you currently hold + the additional one your trying to add
+        if (bookService.hasSufficientStock(book, ShoppingCartService.getQuantityOfBookInCart(cart, isbn) + 1)) {
+            ShoppingCartService.addBookToCart(cart, book);
+        }
 
         int itemCount = ShoppingCartService.getTotalItemCount(cart);
         return Map.of("itemCount", itemCount);
