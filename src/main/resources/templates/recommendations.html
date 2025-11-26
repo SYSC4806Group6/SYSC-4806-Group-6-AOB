@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recommended Books</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .book-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .book-card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .book-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .book-author {
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <h1>Recommended for You</h1>
+    
+    <div th:if="${recommendations.empty}">
+        <p>No recommendations available yet. Purchase some books to get personalized suggestions!</p>
+    </div>
+
+    <div class="book-grid" th:unless="${recommendations.empty}">
+        <div th:each="book : ${recommendations}" class="book-card">
+            <img th:src="${book.pictureUrl}" alt="Book Cover">
+            <div class="book-title" th:text="${book.title}">Title</div>
+            <div class="book-author" th:text="${book.author}">Author</div>
+            <a th:href="@{/book(isbn=${book.isbn})}" class="btn">View Details</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
