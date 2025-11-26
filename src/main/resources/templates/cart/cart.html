@@ -174,7 +174,9 @@
 
             <div class="quantity">
                 <label>Qty:</label>
-                <form th:action="@{/cart/update}" method="post"
+                <form th:action="@{/cart/update/{isbn}(isbn=${item.book.isbn})}"
+                      method="post"
+                      onsubmit="return false;"
                       style="display:flex;align-items:center;gap:0.5rem;">
                     <input type="hidden" name="isbn" th:value="${item.book.isbn}">
                     <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="qty-input">
@@ -271,12 +273,12 @@
 
         qtyInputs.forEach(input => {
             input.addEventListener('change', function() {
-                const newQty = parseInt(this.value);
+                let newQty = parseInt(this.value);
                 const isbn = this.closest("form").querySelector('input[name="isbn"]').value
 
                 if (isNaN(newQty) || newQty < 1) {
+                    newQty = 1;
                     this.value = 1;
-                    return;
                 }
 
                 fetch(`/cart/update/${isbn}?quantity=${newQty}`, {
