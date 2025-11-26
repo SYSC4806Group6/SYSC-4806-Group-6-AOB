@@ -1,6 +1,8 @@
 package org.example.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.entities.PurchaseReceipt;
+import org.example.entities.ShoppingCart;
 import org.example.entities.User;
 import org.example.security.CustomUserDetails;
 import org.example.services.PurchaseReceiptService;
@@ -27,7 +29,7 @@ public class PurchaseReceiptController {
      * Displays a list of all purchase receipts for the logged-in user.
      */
     @GetMapping
-    public String listUserOrders(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+    public String listUserOrders(@AuthenticationPrincipal CustomUserDetails userDetails, Model model, HttpSession session) {
 
         if (userDetails == null) {
             model.addAttribute("receipts", List.of());
@@ -39,6 +41,11 @@ public class PurchaseReceiptController {
         List<PurchaseReceipt> receipts = prService.getReceiptsForUser(user);
         model.addAttribute("receipts", receipts);
 
+        //Cart Icon in Header
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        int cartSize = cart != null ? cart.getTotalNumBooks() : 0;
+        model.addAttribute("cartSize", cartSize);
+
         return "receipts/list";
     }
 
@@ -49,6 +56,7 @@ public class PurchaseReceiptController {
     public String viewOrderDetails(@PathVariable Long id,
                                    @AuthenticationPrincipal CustomUserDetails userDetails,
                                    Model model,
+                                   HttpSession session,
                                    RedirectAttributes redirectAttributes) {
 
         User user = userDetails.getUser();
@@ -59,6 +67,11 @@ public class PurchaseReceiptController {
             return "redirect:/purchaseReceipts"; // Redirect back to master list
         }
         model.addAttribute("receipt", receiptOpt.get());
+
+        //Cart Icon in Header
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        int cartSize = cart != null ? cart.getTotalNumBooks() : 0;
+        model.addAttribute("cartSize", cartSize);
 
         return "receipts/details";
     }
