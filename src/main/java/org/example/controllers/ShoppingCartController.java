@@ -99,20 +99,18 @@ public class ShoppingCartController {
             session.setAttribute("cart", cart);
         }
 
-        if (quantity < 1) {
-            quantity = 1;
-        }
-        ShoppingCartService.updateBookQuantity(cart, isbn, quantity);
-        session.setAttribute("cart", cart);
+        Book book = bookCatalogService.getBookOrThrow(isbn);
+        int stock = book.getInventoryQuantity();
 
-        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        int finalQuantity = Math.min(quantity, stock);   // 🔥 prevents exceeding stock
+        boolean limited = quantity > stock;
 
         ShoppingCartService.updateBookQuantity(cart, isbn, finalQuantity);
 
         return Map.of(
                 "itemCount", ShoppingCartService.getTotalItemCount(cart),
                 "finalQuantity", finalQuantity,
-                "limited", limited
+                "limited", limited  // 🔥 tells JS to show banner
         );
     }
 

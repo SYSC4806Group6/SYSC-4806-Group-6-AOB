@@ -68,7 +68,7 @@ public class Book {
         this.author = Objects.requireNonNull(author, "author must not be null");
         this.publisher = Objects.requireNonNull(publisher, "publisher must not be null");
         this.price = price;
-        this.inventoryQuantity = 10;
+        this.inventoryQuantity = 0;
 
         if (tags != null) {
             this.tags.addAll(tags);
