@@ -94,12 +94,13 @@ public class ShoppingCartController {
             cart = new ShoppingCart();
         }
 
+        if (quantity < 1) {
+            quantity = 1;
+        }
         ShoppingCartService.updateBookQuantity(cart, isbn, quantity);
-
         session.setAttribute("cart", cart);
 
         int itemCount = ShoppingCartService.getTotalItemCount(cart);
-        double total = cart.getAndCalculateTotalCartPrice();
 
         return Map.of("itemCount", itemCount);
 
