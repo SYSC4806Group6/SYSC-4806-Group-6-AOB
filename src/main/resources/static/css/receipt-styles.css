@@ -60,3 +60,12 @@
 {
     text-align: right;
 }
+a.action-link {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0;
+}
+a.action-link:hover {
+    background: none !important;
+    text-decoration: underline;
+}
