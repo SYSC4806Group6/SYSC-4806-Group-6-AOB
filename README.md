@@ -40,7 +40,7 @@ In Milestone 2 we:
 ## 🧑‍💻 Team Roles Plan (Milestone 3)
 | Person    | Role                                    | Responsibilities                                                                 |
 |-----------|-----------------------------------------|----------------------------------------------------------------------------------|
-| Sebastian | Testing/ extending admin                | Updating admin to be able to control other user accounts, and tests              |
+| Sebastian | Testing                                 | Test cases for controllers, and bug fixes                                        |
 | Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
 | Salim     | Functionality Clean Up                  | Thoroughly checking all funcitonalities and maximizing functionality                         |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
