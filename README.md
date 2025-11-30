@@ -42,9 +42,9 @@ In Milestone 2 we:
 |-----------|-----------------------------------------|----------------------------------------------------------------------------------|
 | Sebastian | Testing                                 | Test cases for controllers, and bug fixes                                        |
 | Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
-| Salim     | Functionality Clean Up                  | Thoroughly checking all funcitonalities and maximizing functionality                         |
+| Salim     | Functionality Clean Up                  | Thoroughly checking all funcitonalities and maximizing functionality             |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
-| Nolan     | Third Party oAuth / Clean up and polish | So users can sign in using Google, and cleanup for the final product/testing     |
+| Nolan     | Tests / Clean up and polish             | Cleanup for the final product and adding more robust testing                     |
 
 
 ## ⚡ Milestone 1 Summary
