@@ -1,94 +1,114 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Order ID#' + ${receipt.id}">Receipt Details</title>
+    <title>AmazinBookStore | Receipt Details</title>
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <link rel="stylesheet" href="/css/default-styles.css">
     <link rel="stylesheet" href="/css/receipt-styles.css">
+
+    <style>
+        header {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:1.5rem 0;
+            position:relative;
+        }
+
+        .header-controls{
+            position:absolute;
+            right:2rem;
+            top:1.5rem;
+            display:flex;
+            align-items:center;
+            gap:1rem;
+        }
+
+        a.action-link{
+            font-size:1rem;
+            font-weight:600;
+            text-decoration:none;
+            color:#1a56db;
+        }
+        a.action-link:hover{ text-decoration:underline }
+
+        h1{ text-align:center;margin-bottom:1rem; }
+
+    </style>
 </head>
+
 <body>
-    <header>
-        <a th:href="@{/admin/books}"
-           sec:authorize="hasRole('ADMIN')"
-           class="admin-button left-admin-button">
-            Admin Panel
+
+<header>
+    <a th:href="@{/purchaseReceipts}" class="action-link">← My Receipts</a>
+
+    <h1>Amazin Book Store Receipts</h1>
+
+    <div class="header-controls">
+        <a class="action-link" th:href="@{/books}">← Catalog</a>
+
+        <a class="cart-button" th:href="@{/cart}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 4h-2l-1 2H2v2h1l3.6 7.59L5 18a2 2 0 1 0 2 2h10v-2H7.42l.93-2h7.45a2 2 0 0 0 1.87-1.31L21 6H6.42l-.94-2zM7 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1.1-6h-8.45l-2.1-4.5h12.3L18.1 14z"/>
+            </svg>
+            <span id="cart-count" th:text="${cartSize}">0</span>
         </a>
 
-        <h1 class="site-title">
-            Amazin Book Store Receipts
-        </h1>
-        <div class="header-controls">
-
-            <a class="action-link" th:href="@{/purchaseReceipts}">← My Receipts</a>
-
-            <a class="action-link" th:href="@{/books}">← Catalog</a>
-
-            <a class="cart-button" th:href="@{/cart}">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7 4h-2l-1 2H2v2h1l3.6 7.59L5 18a2 2 0 1 0 2 2h10v-2H7.42l.93-2h7.45a2 2 0 0 0 1.87-1.31L21 6H6.42l-.94-2zM7 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1.1-6h-8.45l-2.1-4.5h12.3L18.1 14z"/>
-                </svg>
-                <span class="cart-count" id="cart-count" th:text="${cartSize}">0</span>
-            </a>
-            <a class="header-receipts" th:href="@{/purchaseReceipts}">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M17 4H9c-2 0-3 1.5-3 3v10c0 1.5 1 3 3 3h8c1.5 0 2-1 2-2V6c0-1-.5-2-2-2zm-8 5h7m-7 4h7m-7 4h7"/>
-                </svg>
-            </a>
-
-            <div class="auth-controls">
-                <div sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/login}">Login</a>
-                </div>
-
-                <div sec:authorize="isAuthenticated()">
-                    <span sec:authentication="name">Username</span>
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit">Logout</button>
-                    </form>
-                </div>
-            </div>
+        <div sec:authorize="isAuthenticated()" style="text-align:right;">
+            <span sec:authentication="name"></span><br>
+            <form th:action="@{/logout}" method="post">
+                <button style="background:none;border:none;color:#1a56db;cursor:pointer;font-size:0.9rem;">
+                    Logout
+                </button>
+            </form>
         </div>
-    </header>
-
-    <section class="container" th:if="${receipt}">
-
-        <h1 th:text="'Order #' + ${receipt.id}">Receipt Details</h1>
-
-        <div class="summary">
-            <p><strong>Order Date:</strong> <span th:text="${#temporals.format(receipt.orderDateTime, 'yyyy-MM-dd HH:mm')}">2025-11-10 12:00</span></p>
-            <p><strong>Order Total:</strong> <span th:text="${#numbers.formatDecimal(receipt.totalCost, 1, 'COMMA', 2, 'POINT')}">$0.00</span></p>
-        </div>
-
-        <h2>Items</h2>
-        <table class="items-table">
-            <thead>
-            <tr>
-                <th>Book Title</th>
-                <th>Author</th>
-                <th>Price at Purchase</th>
-                <th>Quantity</th>
-                <th>Line Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${receipt.items}">
-                <td th:text="${item.book.title}">Book Title</td>
-                <td th:text="${item.book.author}">Book Author</td>
-                <td th:text="${#numbers.formatDecimal(item.pricePerBook, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
-                <td th:text="${item.quantity}">0</td>
-                <td th:text="${#numbers.formatDecimal(item.pricePerBook * item.quantity, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
-            </tr>
-            </tbody>
-        </table>
-
-    </section>
-
-    <div th:if="${receipt == null}">
-        <p>Receipt not found.</p>
     </div>
+</header>
+
+
+<h2 style="margin-left:2rem;">Order #<span th:text="${receipt.id}"></span></h2>
+
+<p style="margin-left:2rem;"><strong>Order Date:</strong>
+    <span th:text="${#temporals.format(receipt.orderDateTime,'yyyy-MM-dd HH:mm')}"></span>
+</p>
+
+<p style="margin-left:2rem;"><strong>Order Total:</strong>
+    <span th:text="${#numbers.formatDecimal(receipt.totalCost,1,'COMMA',2,'POINT')}"></span>
+</p>
+
+<hr>
+
+<h2 style="margin-left:2rem;">Items</h2>
+
+<table class="orders-table">
+    <thead>
+    <tr>
+        <th>Book Title</th>
+        <th>Author</th>
+        <th>Price at Purchase</th>
+        <th>Quantity</th>
+        <th>Line Total</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="line : ${receipt.items}">
+        <td th:text="${line.book.title}">Title</td>
+        <td th:text="${line.book.author}">Author</td>
+
+        <td th:text="${#numbers.formatDecimal(line.pricePerBook, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+
+        <td th:text="${line.quantity}">1</td>
+
+        <td th:text="${#numbers.formatDecimal(line.pricePerBook * line.quantity, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+    </tr>
+    </tbody>
+</table>
+
 
 </body>
 </html>

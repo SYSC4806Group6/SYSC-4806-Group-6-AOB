@@ -60,8 +60,10 @@ public class ShoppingCartController {
 
         ShoppingCart cart = getOrCreateCart(session);
 
+        double total = cart.getAndCalculateTotalCartPrice();
+
         model.addAttribute("cartItems", cart.getItems());
-        model.addAttribute("totalPrice", cart.getAndCalculateTotalCartPrice());
+        model.addAttribute("cartTotal", total);
 
         return "cart/cart";
     }
