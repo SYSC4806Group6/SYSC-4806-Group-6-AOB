@@ -137,32 +137,7 @@
             background: #ffe6e6;
             color: #7a1d1d;
         }
-        .cart-banner {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 900px;
-            background: #dc2626;
-            color: white;
-            text-align: center;
-            padding: 12px 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-radius: 0 0 6px 6px;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity .5s ease;
-        }
-        .cart-banner.show {
-            opacity: 1;
-        }
-        .cart-banner.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -179,8 +154,6 @@
     <h1>Your Cart</h1>
     <a th:href="@{/books}" class="cart-btn">← Continue Shopping</a>
 </header>
-
-<div id="cart-banner" class="cart-banner hidden"></div>
 
 <div class="alert empty-message" th:if="${#lists.isEmpty(cartItems)}">
     Your cart is empty.
@@ -201,7 +174,9 @@
 
             <div class="quantity">
                 <label>Qty:</label>
-                <form th:action="@{/cart/update}" method="post"
+                <form th:action="@{/cart/update/{isbn}(isbn=${item.book.isbn})}"
+                      method="post"
+                      onsubmit="return false;"
                       style="display:flex;align-items:center;gap:0.5rem;">
                     <input type="hidden" name="isbn" th:value="${item.book.isbn}">
                     <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="qty-input">
@@ -298,12 +273,12 @@
 
         qtyInputs.forEach(input => {
             input.addEventListener('change', function() {
-                const newQty = parseInt(this.value);
+                let newQty = parseInt(this.value);
                 const isbn = this.closest("form").querySelector('input[name="isbn"]').value
 
                 if (isNaN(newQty) || newQty < 1) {
+                    newQty = 1;
                     this.value = 1;
-                    return;
                 }
 
                 fetch(`/cart/update/${isbn}?quantity=${newQty}`, {
@@ -312,20 +287,6 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        this.value = data.finalQuantity;
-
-                        if (data.limited === true) {
-                            const banner = document.getElementById("cart-banner");
-                            banner.innerText = "You already have the maximum available stock for this book.";
-                            banner.classList.remove("hidden");
-                            banner.classList.add("show");
-
-                            setTimeout(() => {
-                                banner.classList.remove("show");
-                                banner.classList.add("hidden");
-                            }, 3000);
-                        }
-
                         const cartCount = document.getElementById("cart-count");
                         if (cartCount) cartCount.textContent = data.itemCount;
 

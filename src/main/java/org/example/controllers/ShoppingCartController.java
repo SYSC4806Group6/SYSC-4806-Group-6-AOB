@@ -46,16 +46,12 @@ public class ShoppingCartController {
 
         // Don't complete the add if: stock is unavailable or already holding the potential stock in cart
         // Check the stock with the amount you currently hold + the additional one your trying to add
-        boolean canAdd = bookService.hasSufficientStock(book, ShoppingCartService.getQuantityOfBookInCart(cart, isbn) + 1);
-
-        if (canAdd) {
+        if (bookService.hasSufficientStock(book, ShoppingCartService.getQuantityOfBookInCart(cart, isbn) + 1)) {
             ShoppingCartService.addBookToCart(cart, book);
         }
 
-        return Map.of(
-                "itemCount", ShoppingCartService.getTotalItemCount(cart),
-                "added", canAdd
-        );
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
+        return Map.of("itemCount", itemCount);
     }
 
     @GetMapping
@@ -96,22 +92,18 @@ public class ShoppingCartController {
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         if (cart == null) {
             cart = new ShoppingCart();
-            session.setAttribute("cart", cart);
         }
 
-        Book book = bookCatalogService.getBookOrThrow(isbn);
-        int stock = book.getInventoryQuantity();
+        if (quantity < 1) {
+            quantity = 1;
+        }
+        ShoppingCartService.updateBookQuantity(cart, isbn, quantity);
+        session.setAttribute("cart", cart);
 
-        int finalQuantity = Math.min(quantity, stock);   // 🔥 prevents exceeding stock
-        boolean limited = quantity > stock;
+        int itemCount = ShoppingCartService.getTotalItemCount(cart);
 
-        ShoppingCartService.updateBookQuantity(cart, isbn, finalQuantity);
+        return Map.of("itemCount", itemCount);
 
-        return Map.of(
-                "itemCount", ShoppingCartService.getTotalItemCount(cart),
-                "finalQuantity", finalQuantity,
-                "limited", limited  // 🔥 tells JS to show banner
-        );
     }
 
     @GetMapping("/total")
