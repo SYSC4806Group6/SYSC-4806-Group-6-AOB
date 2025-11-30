@@ -16,6 +16,7 @@ public class ShoppingCartService {
     }
 
     public void addBookToCart(ShoppingCart cart, Book book) {
+
         ShoppingCartItem existingItem = cart.getItems().stream()
                 .filter(i -> i.getBook().getIsbn().equals(book.getIsbn()))
                 .findFirst()
