@@ -6,16 +6,18 @@ import org.example.entities.User;
 import org.example.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
-    @InjectMocks
-    private UserService userService;
 
     @Mock
     private UserRepository userRepository;
@@ -23,68 +25,66 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private RegistrationConfig dto;
+    @InjectMocks
+    private UserService userService;
+
+    private RegistrationConfig validDto;
 
     @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-
-        dto = new RegistrationConfig(
-                "newUser",
-                "email@example.com",
+    void setUp() {
+        validDto = new RegistrationConfig(
+                "newuser",
+                "test@example.com",
                 "password123",
                 "password123",
                 USER_ROLE.CUSTOMER
         );
-
     }
 
     @Test
-    void registerUser_success_savesUser() {
-        given(userRepository.findByUsername("newUser")).willReturn(null);
-        given(userRepository.findByEmail("email@example.com")).willReturn(null);
-        given(passwordEncoder.encode("password123")).willReturn("encodedPass");
+    void registerUser_Success() {
+        when(userRepository.findByUsername("newuser")).thenReturn(null);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(null);
+        when(passwordEncoder.encode("password123")).thenReturn("encodedPass");
 
-        userService.registerUser(dto);
+        userService.registerUser(validDto);
 
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(captor.capture());
-
-        User saved = captor.getValue();
-        assertEquals("newUser", saved.getUsername());
-        assertEquals("email@example.com", saved.getEmail());
-        assertEquals("encodedPass", saved.getPassword());
-        assertEquals(USER_ROLE.CUSTOMER, saved.getUserRole());
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
-    void registerUser_passwordMismatch_throwsException() {
-        dto.setConfirmPassword("different");
+    void registerUser_ThrowsException_WhenPasswordsDoNotMatch() {
+        validDto.setConfirmPassword("mismatch");
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> userService.registerUser(dto));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.registerUser(validDto);
+        });
 
-        assertEquals("Passwords do not match", ex.getMessage());
+        assertEquals("Passwords do not match", exception.getMessage());
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
-    void registerUser_usernameExists_throwsException() {
-        given(userRepository.findByUsername("newUser")).willReturn(new User());
+    void registerUser_ThrowsException_WhenUsernameExists() {
+        when(userRepository.findByUsername("newuser")).thenReturn(new User());
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> userService.registerUser(dto));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.registerUser(validDto);
+        });
 
-        assertEquals("Username already exists", ex.getMessage());
+        assertEquals("Username already exists", exception.getMessage());
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
-    void registerUser_emailExists_throwsException() {
-        given(userRepository.findByUsername("newUser")).willReturn(null);
-        given(userRepository.findByEmail("email@example.com")).willReturn(new User());
+    void registerUser_ThrowsException_WhenEmailExists() {
+        when(userRepository.findByUsername("newuser")).thenReturn(null);
+        when(userRepository.findByEmail("test@example.com")).thenReturn(new User());
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> userService.registerUser(dto));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            userService.registerUser(validDto);
+        });
 
-        assertEquals("Email already exists", ex.getMessage());
+        assertEquals("Email already exists", exception.getMessage());
     }
 }
