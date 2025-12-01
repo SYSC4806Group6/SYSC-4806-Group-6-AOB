@@ -41,7 +41,7 @@ In Milestone 2 we:
 | Person    | Role                                    | Responsibilities                                                                 |
 |-----------|-----------------------------------------|----------------------------------------------------------------------------------|
 | Sebastian | Testing                                 | Test cases for controllers, and bug fixes                                        |
-| Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
+| Owen      | Receipt UI Match / Repository Tests / Bug Fixes | Updated Receipt html pages to match the main page's style. Added remaining repository tests. Fixed several issues regarding book inventory quantities. |
 | Salim     | Jaccard Recommendation System           | Designed and implemented the Jaccard-based recommendation algorithm in `RecommendationService` comparing user purchase history with book metadata (Author/Tags). Created the `RecommendationController` and frontend view to display personalized suggestions, and verified the logic with comprehensive unit tests. |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
 | Nolan     | Tests / Clean up and polish             | Cleanup for the final product and adding more robust testing                     |
