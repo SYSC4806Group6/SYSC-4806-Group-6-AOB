@@ -37,12 +37,12 @@ In Milestone 2 we:
 | Renee     | Complete Cart & Checkout Flow | Made all add to cart functionalities effective (all books show in cart with correct quantity, can inc/dec amount on cart page with up/down buttons and text box), completed checkout flow (shopping -> viewing cart -> proceed to checkout -> input checkout info -> checkout -> confirmation page), persisted receipts for users, details of past receipts viewable from receipts tab |
 | Nolan     | Login/Authentication | Implemented Spring Security to allow users to register and log in with a custom username and password, added an admin auth to make sure only admin users can access specific features (eg. admin panel) |
 
-## 🧑‍💻 Team Roles Plan (Milestone 3)
+## 🧑‍💻 Team Roles (Milestone 3)
 | Person    | Role                                    | Responsibilities                                                                 |
 |-----------|-----------------------------------------|----------------------------------------------------------------------------------|
 | Sebastian | Testing                                 | Test cases for controllers, and bug fixes                                        |
 | Owen      | UI / Tests / Functionality finalization | Ensure that everything behaves & looks as expected via the three mentioned tasks |
-| Salim     | Functionality Clean Up                  | Thoroughly checking all funcitonalities and maximizing functionality             |
+| Salim     | Jaccard Recommendation System           | Implemented a Jaccard-based recommendation system that suggests books based on purchase history (Author/Tags).   |
 | Renee     | UI Match                                | Match UI across tabs and pages                                                   |
 | Nolan     | Tests / Clean up and polish             | Cleanup for the final product and adding more robust testing                     |
 
@@ -59,8 +59,8 @@ In Milestone 2 we:
 - Refreshed the catalog UI (new header/search/cart badge, collapsible filters, modern book cards) and added cart page upgrades.
 - Documented the milestone, README updates, and prepared presentation assets to support the final demo.
 
-## ⚡ Milestone 3 Plan
-- Add recommendation functionality to main browsing page.
+## ⚡ Milestone 3 Summary
+- Implemented Jaccard-based recommendation system for personalized book suggestions.
 - Continue testing to ensure high quality web app.
 - General clean up and matching of UI across pages and tabs.
 - Ensure all documentation is up to date and clear.
